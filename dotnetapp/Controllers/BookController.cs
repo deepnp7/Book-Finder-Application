@@ -16,9 +16,8 @@ namespace dotnetapp.Controllers
             _service = service;
         }
 
-        // 1. GetAllBooks - accessible to authenticated users (both roles)
         [HttpGet]
-        [Authorize] // both BookRecommender and BookReader (role-based check not needed here)
+        [Authorize] // role-based
         public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks()
         {
             try
@@ -32,7 +31,6 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // 2. GetBookById
         [HttpGet("{bookId:int}")]
         [Authorize]
         public async Task<ActionResult<Book>> GetBookById(int bookId)
@@ -44,7 +42,6 @@ namespace dotnetapp.Controllers
             }
             catch (BookException)
             {
-                // per spec: If book not found => 404 Not Found with "Book not found"
                 return NotFound(new { Message = "Book not found" });
             }
             catch (Exception ex)
@@ -53,9 +50,9 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // 3. AddBook - only BookRecommender role allowed
         [HttpPost]
         [Authorize(Roles = "BookRecommender")]
+        //  [AllowAnonymous]
         public async Task<ActionResult> AddBook([FromBody] Book book)
         {
             try
@@ -67,12 +64,10 @@ namespace dotnetapp.Controllers
                 if (result)
                     return StatusCode(201, new { Message = "Book added successfully" });
 
-                // if service returns false (it does not in current implementation), fallback
                 return StatusCode(500, new { Message = "Failed to add book" });
             }
             catch (BookException)
             {
-                // per spec: when duplicate -> return 500 with "Failed to add book"
                 return StatusCode(500, new { Message = "Failed to add book" });
             }
             catch (Exception ex)
@@ -81,7 +76,6 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // 4. UpdateBook
         [HttpPut("{bookId:int}")]
         [Authorize(Roles = "BookRecommender")]
         public async Task<ActionResult> UpdateBook(int bookId, [FromBody] Book book)
@@ -95,7 +89,6 @@ namespace dotnetapp.Controllers
                 if (updated)
                     return Ok(new { Message = "Book updated successfully" });
 
-                // if not found, per spec return 404 with "Cannot find any book"
                 return NotFound(new { Message = "Cannot find any book" });
             }
             catch (Exception ex)
@@ -104,7 +97,6 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // 5. DeleteBook
         [HttpDelete("{bookId:int}")]
         [Authorize(Roles = "BookRecommender")]
         public async Task<ActionResult> DeleteBook(int bookId)

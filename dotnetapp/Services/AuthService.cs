@@ -1,5 +1,6 @@
 using dotnetapp.Data;
 using dotnetapp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
@@ -10,66 +11,66 @@ namespace dotnetapp.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
 
-        public AuthService(ApplicationDbContext context, IConfiguration config)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config)
         {
-            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _config = config;
         }
 
-        // 1. Registration
-        // returns (statusCode, message)
         public async Task<(int, string)> Registration(User model, string role)
         {
-            // Basic duplicate check
-            var existing = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-            if (existing != null)
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
                 return (400, "Email already registered");
 
-            // hash the password (simple SHA256 for demo; replace with a stronger hash in prod)
-            var hashed = HashPassword(model.Password);
-
-            var user = new User
+            var user = new ApplicationUser
             {
+                UserName = model.Username,
                 Email = model.Email,
-                Password = hashed,
-                Username = model.Username,
-                MobileNumber = model.MobileNumber,
-                UserRole = role
+                PhoneNumber = model.MobileNumber,
+                Name=model.Username
             };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return (500, string.Join(", ", result.Errors.Select(e => e.Description)));
+
+            // Ensure role exists
+            if (!await _roleManager.RoleExistsAsync(role))
+                await _roleManager.CreateAsync(new IdentityRole(role));
+
+            // Assign role
+            await _userManager.AddToRoleAsync(user, role);
 
             return (201, "User registered successfully");
         }
 
-        // 2. Login
-        // returns (statusCode, object) where object can be a string message or token payload
         public async Task<(int, object)> Login(LoginModel model)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
-            {
                 return (400, "Invalid email");
-            }
 
-            var hashed = HashPassword(model.Password);
-            if (user.Password != hashed)
-            {
+            var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!passwordValid)
                 return (400, "Invalid password");
-            }
 
-            // create claims
+            var roles = await _userManager.GetRolesAsync(user);
+
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Username ?? user.Email),
-                new Claim(ClaimTypes.Role, user.UserRole ?? string.Empty)
+                new Claim(ClaimTypes.Name, user.UserName ?? user.Email),
             };
+
+            foreach (var r in roles)
+                claims.Add(new Claim(ClaimTypes.Role, r));
 
             var token = GenerateToken(claims);
 
@@ -82,12 +83,11 @@ namespace dotnetapp.Services
             return (201, payload);
         }
 
-        // 3. GenerateToken
         private string GenerateToken(IEnumerable<Claim> claims)
         {
-            var key = _config["Jwt:Key"];
-            var issuer = _config["Jwt:Issuer"];
-            var audience = _config["Jwt:Audience"];
+            var key = _config["Jwt:Secret"];
+            var issuer = _config["Jwt:ValidIssuer"];
+            var audience = _config["Jwt:ValidAudience"];
             var expireMinutesStr = _config["Jwt:ExpiryMinutes"];
             int expiryMinutes = 60;
             if (!string.IsNullOrEmpty(expireMinutesStr) && int.TryParse(expireMinutesStr, out var parsed))
@@ -105,15 +105,6 @@ namespace dotnetapp.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        // helper hashing (simple deterministic hash for checking)
-        private static string HashPassword(string password)
-        {
-            using var sha = System.Security.Cryptography.SHA256.Create();
-            var bytes = Encoding.UTF8.GetBytes(password);
-            var hash = sha.ComputeHash(bytes);
-            return Convert.ToBase64String(hash);
         }
     }
 }

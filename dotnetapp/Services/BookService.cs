@@ -16,13 +16,11 @@ namespace dotnetapp.Services
             _context = context;
         }
 
-        // 1. GetAllBooks
         public async Task<IEnumerable<Book>> GetAllBooks()
         {
             return await _context.Books.AsNoTracking().ToListAsync();
         }
 
-        // 2. GetBookById
         public async Task<Book> GetBookById(int bookId)
         {
             var book = await _context.Books.AsNoTracking().FirstOrDefaultAsync(b => b.BookId == bookId);
@@ -31,10 +29,8 @@ namespace dotnetapp.Services
             return book;
         }
 
-        // 3. AddBook
         public async Task<bool> AddBook(Book book)
         {
-            // check duplicate title
             var exists = await _context.Books.AnyAsync(b => b.Title == book.Title);
             if (exists)
                 throw new BookException("Failed to add book");
@@ -44,13 +40,11 @@ namespace dotnetapp.Services
             return true;
         }
 
-        // 4. UpdateBook
         public async Task<bool> UpdateBook(int bookId, Book book)
         {
             var existing = await _context.Books.FirstOrDefaultAsync(b => b.BookId == bookId);
             if (existing == null) return false;
 
-            // update fields
             existing.Title = book.Title;
             existing.Author = book.Author;
             existing.Genre = book.Genre;
@@ -61,7 +55,6 @@ namespace dotnetapp.Services
             return true;
         }
 
-        // 5. DeleteBook
         public async Task<bool> DeleteBook(int bookId)
         {
             var existing = await _context.Books.FirstOrDefaultAsync(b => b.BookId == bookId);

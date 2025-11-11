@@ -15,8 +15,8 @@ namespace dotnetapp.Models
 
         public string Genre { get; set; }
 
-        public string PublishedDate { get; set; } // store as string as per spec
+        public string PublishedDate { get; set; } 
 
-        public string CoverImage { get; set; } // store path or URL
+        public string CoverImage { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace dotnetapp.Controllers
             _auth = auth;
         }
 
-        // POST: /api/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
@@ -29,38 +28,27 @@ namespace dotnetapp.Controllers
                 if (status == 201)
                     return Ok(result); // { Status: "Success", token: ... }
 
-                // 400 with error string
                 return BadRequest(new { Error = result });
             }
             catch (Exception ex)
             {
-                // per spec return 500 with error message
                 return StatusCode(500, new { Error = ex.Message });
             }
         }
 
-        // POST: /api/register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User model)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                // model.UserRole expected to be provided by request body
-                var role = model.UserRole;
-                var (status, message) = await _auth.Registration(model, role);
+            var role = model.UserRole;
+            var (status, message) = await _auth.Registration(model, role);
 
-                if (status == 201)
-                    return StatusCode(201, new { Message = message });
+            if (status == 201)
+                return StatusCode(201, new { Message = message });
 
-                return BadRequest(new { Error = message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Error = ex.Message });
-            }
+            return BadRequest(new { Error = message });
         }
     }
 }
