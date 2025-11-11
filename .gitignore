@@ -1,0 +1,15 @@
+#Backend
+
+dotnetapp/Migrations/
+
+nunit/
+
+#Frontend
+
+react/
+
+reactapp/node_modules
+reactapp/package-lock.json
+reactapp/src/apiConfig.js
+
+ 
