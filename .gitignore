@@ -12,4 +12,6 @@ reactapp/node_modules
 reactapp/package-lock.json
 reactapp/src/apiConfig.js
 
- 
+dotnetapp/dotnetapp.sln
+reactapp/src/tests
+TestProject 
