@@ -52,7 +52,6 @@ namespace dotnetapp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "BookRecommender")]
-        //  [AllowAnonymous]
         public async Task<ActionResult> AddBook([FromBody] Book book)
         {
             try
