@@ -1,0 +1,57 @@
+/* Container to center content vertically and horizontally */
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9; /* Light gray background */
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Inner content box */
+.error-content {
+  text-align: center;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+/* Error image styling */
+.error-image {
+  width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Title styling */
+.error-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #8b0000; /* Dark red for emphasis */
+  margin-bottom: 10px;
+}
+
+/* Message styling */
+.error-message {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Button styling */
+.error-button {
+  background-color: #8b0000; /* Dark red */
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.error-button:hover {
+  background-color: #a40000; /* Slightly lighter red on hover */
+}
