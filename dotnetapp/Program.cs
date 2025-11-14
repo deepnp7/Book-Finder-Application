@@ -8,6 +8,7 @@ using dotnetapp.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -21,10 +22,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// Authentication - JWT
-var jwt = builder.Configuration.GetSection("Jwt");
-var secret = jwt.GetValue<string>("Secret") ?? "VerySecretKeyForDevOnly_ChangeMe";
-var key = Encoding.UTF8.GetBytes(secret);
+// JWT Configuration
+var jwtSection = configuration.GetSection("JWT");
+var key = Encoding.UTF8.GetBytes(jwtSection.GetValue<string>("Secret"));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,15 +39,24 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwt["ValidIssuer"],
-        ValidAudience = jwt["ValidAudience"],
+        ValidIssuer = jwtSection["ValidIssuer"],
+        ValidAudience = jwtSection["ValidAudience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+    policy => policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -78,7 +88,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
