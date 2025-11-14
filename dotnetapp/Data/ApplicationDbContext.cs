@@ -1,29 +1,17 @@
-using Microsoft.EntityFrameworkCore;
 using dotnetapp.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        // Define DbSets (tables)
-        public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
-
-        // Optional: configure model properties and relationships
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Unique username
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username)
-                .IsUnique();
-
-        }
+        public DbSet<User> Users { get; set; }
     }
 }
