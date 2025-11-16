@@ -1,27 +1,33 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-// Helper to get token and role from localStorage
+// Auth Helper
+// Fetches JWT token and user role from localStorage.
+// Used to check if the user is authenticated and authorized.
 const getAuth = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   return { token, role };
 };
 
-function PrivateRoute({ allowedRoles }) {
+const PrivateRoute = ({ allowedRoles }) => {
   const { token, role } = getAuth();
 
-  // If not logged in, redirect to login
+  // Auth Check
+  // If user is not logged in → redirect to login page
   if (!token) {
     return <Navigate to="/" replace />;
   }
 
-  // If role restriction exists and current user role is not allowed, redirect to error/unauthorized
+  // Role Authorization Check
+  // If route has restricted roles and the user's role isn't allowed
+  // → redirect them to the error/unauthorized page
   if (allowedRoles && !allowedRoles.includes(role)) {
     return <Navigate to="/error" replace />;
   }
 
-  // If authenticated and authorized, allow access
+  // Allow Access
+  // If authenticated AND authorized → load the nested route (Outlet)
   return <Outlet />;
 };
 
