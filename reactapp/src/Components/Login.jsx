@@ -4,15 +4,19 @@ import axios from "axios";
 import API_BASE_URL from "../apiConfig";
 import "./Login.css";
 
-function Login() {
+const Login = () => {
   const navigate = useNavigate();
 
+  // State to store form input (email, password)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  // State to store validation errors
   const [errors, setErrors] = useState({});
+
+  // State to store backend server errors
   const [serverError, setServerError] = useState("");
 
   // Handle input change
@@ -23,6 +27,8 @@ function Login() {
   // Validate inputs
   const validate = () => {
     const newErrors = {};
+
+    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (
@@ -30,9 +36,12 @@ function Login() {
     ) {
       newErrors.email = "Invalid email format";
     }
+
+    // Password validation
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     }
+
     return newErrors;
   };
 
@@ -40,6 +49,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
+
+    // Run validation before sending request
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -47,20 +58,24 @@ function Login() {
     }
 
     try {
+      // API call for login
       const response = await axios.post(`${API_BASE_URL}api/login`, formData);
+
+      // Successful login response handling
       if (response.data && response.data.status === "Success") {
         const { token } = response.data;
-        // Decode token (or extract role from backend response)
+
+        // Decode JWT token to extract role & username
         const decoded = parseJwt(token);
         const userRole = decoded?.role || decoded?.UserRole || decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
         const userName = decoded?.username || decoded?.UserName || decoded?.sub;
 
-        // Store JWT in localStorage
+        // Save token and role in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("role", userRole);
         localStorage.setItem("username", userName);
 
-        // Redirect based on role
+        // Redirect user based on their role
         if (userRole === "BookRecommender") {
           navigate("/bookrecommender/home");
         } else if (userRole === "BookReader") {
@@ -77,10 +92,10 @@ function Login() {
     }
   };
 
-  // Decode JWT to extract role
+  // JWT DECODER
   const parseJwt = (token) => {
     try {
-      return JSON.parse(atob(token.split(".")[1]));
+      return JSON.parse(atob(token.split(".")[1])); // // Decode Base64 middle part of JWT
     } catch (e) {
       return null;
     }
@@ -89,7 +104,8 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        {/* Left Section */}
+
+        {/* LEFT PANEL */}
         <div className="login-left">
           <h2 className="login-subtitle">BookFinder</h2>
           <p className="login-description">
@@ -97,13 +113,17 @@ function Login() {
           </p>
         </div>
 
-        {/* Right Section */}
+        {/* RIGHT PANEL */}
         <div className="login-right">
           <h1 className="login-title">Login</h1>
 
+          {/* Server-side error display */}
           {serverError && <p className="error-message">{serverError}</p>}
 
+          {/* Login Form */}
           <form onSubmit={handleSubmit} noValidate>
+
+            {/* Email Field */}
             <div className="form-group">
               <label>Email</label>
               <input
@@ -117,6 +137,7 @@ function Login() {
               {errors.email && <span className="error-text">{errors.email}</span>}
             </div>
 
+            {/* Password Field */}
             <div className="form-group">
               <label>Password</label>
               <input
@@ -130,13 +151,16 @@ function Login() {
               {errors.password && <span className="error-text">{errors.password}</span>}
             </div>
 
+            {/* Submit Button */}
             <button type="submit" className="login-btn">Login</button>
           </form>
+
+          {/* Forgot Password Link */}
           <p className="forgot-link">
             <Link to="/forgot-password">Forgot Password?</Link>
           </p>
 
-
+          {/* Signup Redirect */}
           <p className="login-footer">
             Don't have an account? <Link to="/signup" className="signup-link">Signup</Link>
           </p>

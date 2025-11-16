@@ -6,8 +6,13 @@ import API_BASE_URL from "../apiConfig";
 import BookRecommenderNavbar from "./BookRecommenderNavbar";
 
 const ViewBook = () => {
+  // State to store list of books
   const [books, setBooks] = useState([]);
+
+  // Stores the book being edited
   const [editingBook, setEditingBook] = useState(null);
+
+  // Controlled form state for edit modal
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -15,14 +20,19 @@ const ViewBook = () => {
     genre: "",
     coverImage: "",
   });
+
+  // Validation errors
   const [errors, setErrors] = useState({});
+
+  // Show success modal when update completes
   const [showSuccess, setShowSuccess] = useState(false);
+
   const navigate = useNavigate();
 
-  // Fetch books 
+  // Fetch all books on page load
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // const safeAxiosGet = axios.get ? axios.get : () => Promise.resolve({ data: [] })
+
     axios.get(`${API_BASE_URL}api/books`, {
       headers: {
         "Content-Type": "application/json",
@@ -33,9 +43,11 @@ const ViewBook = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  // When Edit clicked
+  // When user clicks Edit button
   const handleEdit = (book) => {
     setEditingBook(book);
+
+    // Fill form fields with existing book data
     setFormData({
       title: book.title,
       author: book.author,
@@ -45,30 +57,33 @@ const ViewBook = () => {
     });
   };
 
-  // Delete record
+  // Delete selected book
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
       const token = localStorage.getItem("token");
+
       axios.delete(`${API_BASE_URL}api/books/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
         .then(() => {
+          // Remove deleted book from UI
           setBooks(books.filter((b) => b.bookId !== id));
         })
         .catch((err) => console.error(err));
     }
   };
 
-  // Handle input change
+  // Handle form field changes
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validation
+  // Validation before save/update
   const validate = () => {
     let tempErrors = {};
+
     if (!formData.title.trim()) tempErrors.title = "Title is required.";
     if (!formData.author.trim()) tempErrors.author = "Author is required.";
     if (!formData.publishedDate)
@@ -76,20 +91,23 @@ const ViewBook = () => {
     if (!formData.genre.trim()) tempErrors.genre = "Genre is required.";
     if (!formData.coverImage)
       tempErrors.coverImage = "Cover image is required.";
+
     setErrors(tempErrors);
+
     return Object.keys(tempErrors).length === 0;
   };
 
-  // Handle update
+  // Submit updated book info
   const handleUpdate = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     const token = localStorage.getItem("token");
 
-    // If the user uploaded a new image file
+    // Case 1: User uploaded a NEW image file
     if (formData.coverImage instanceof File) {
       const reader = new FileReader();
+
       reader.onloadend = async () => {
         const base64String = reader.result.split(",")[1];
 
@@ -102,6 +120,7 @@ const ViewBook = () => {
         };
 
         try {
+          // Send update request
           await axios.put(
             `${API_BASE_URL}api/books/${editingBook.bookId}`,
             updatedBook,
@@ -113,10 +132,11 @@ const ViewBook = () => {
             }
           );
 
-          // Update UI
+          // Update UI list
           const updatedBooks = books.map((b) =>
             b.bookId === editingBook.bookId ? { ...b, ...updatedBook } : b
           );
+
           setBooks(updatedBooks);
           setEditingBook(null);
           setShowSuccess(true);
@@ -125,9 +145,12 @@ const ViewBook = () => {
           alert("Failed to update book!");
         }
       };
+
       reader.readAsDataURL(formData.coverImage);
-    } else {
-      // If user didn’t change the image (already base64)
+    }
+
+    // Case 2: User did NOT change the image
+    else {
       const updatedBook = { ...formData };
 
       axios.put(`${API_BASE_URL}api/books/${editingBook.bookId}`, updatedBook, {
@@ -140,6 +163,7 @@ const ViewBook = () => {
           const updatedBooks = books.map((b) =>
             b.bookId === editingBook.bookId ? { ...b, ...updatedBook } : b
           );
+
           setBooks(updatedBooks);
           setEditingBook(null);
           setShowSuccess(true);
@@ -151,7 +175,7 @@ const ViewBook = () => {
     }
   };
 
-  // Close success modal
+  // Close update success modal
   const handleCloseSuccess = () => {
     setShowSuccess(false);
     navigate("/bookrecommender/view");
@@ -159,9 +183,12 @@ const ViewBook = () => {
 
   return (
     <div className="viewbook-container">
+      {/* Navigation bar */}
       <BookRecommenderNavbar />
+
       <h2>Books</h2>
 
+      {/* Book Table */}
       <table className="book-table">
         <thead>
           <tr>
@@ -174,6 +201,7 @@ const ViewBook = () => {
           </tr>
         </thead>
         <tbody>
+          {/* No Records */}
           {books.length === 0 ? (
             <tr>
               <td colSpan="6" className="no-records">
@@ -181,6 +209,7 @@ const ViewBook = () => {
               </td>
             </tr>
           ) : (
+            // Render all book rows
             books.map((book) => (
               <tr key={book.bookId}>
                 <td>
@@ -196,6 +225,7 @@ const ViewBook = () => {
                 <td>{book.genre}</td>
                 <td>
                   <button className="edit-btn" onClick={() => handleEdit(book)}>Edit</button>
+
                   <button className="delete-btn" onClick={() => handleDelete(book.bookId)}>Delete</button>
                 </td>
               </tr>
@@ -204,11 +234,12 @@ const ViewBook = () => {
         </tbody>
       </table>
 
-      {/* ===== EDIT FORM MODAL ===== */}
+      {/* Edit Modal */}
       {editingBook && (
         <div className="edit-modal">
           <div className="edit-form">
             <h3>Edit Book</h3>
+
             <form onSubmit={handleUpdate}>
               <label>Title:</label>
               <input
@@ -257,6 +288,7 @@ const ViewBook = () => {
 
               <div className="edit-btn-group">
                 <button type="submit" className="save-btn">Save Changes</button>
+
                 <button type="button" className="cancel-btn" onClick={() => setEditingBook(null)}>Cancel</button>
               </div>
             </form>
@@ -264,11 +296,12 @@ const ViewBook = () => {
         </div>
       )}
 
-      {/* ===== SUCCESS MODAL ===== */}
+      {/* Success Modal */}
       {showSuccess && (
         <div className="success-modal">
           <div className="success-content">
             <h3>Book Updated Successfully!</h3>
+
             <button className="close-btn" onClick={handleCloseSuccess}>Close</button>
           </div>
         </div>

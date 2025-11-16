@@ -1,7 +1,7 @@
 import React from "react";
 import "./HomePage.css";
 
-function HomePage() {
+const HomePage = () => {
   return (
     <div className="home-container">
       {/* Cover Image Section */}
@@ -11,6 +11,8 @@ function HomePage() {
           alt="Book Finder Cover"
           className="home-cover-image"
         />
+
+        {/* App Title on the banner */}
         <h1 className="home-title">BookFinder</h1>
       </div>
 
@@ -20,11 +22,14 @@ function HomePage() {
           An app to discover, explore, and find books tailored to your reading preferences.
         </p>
 
+        {/* Decorative divider line */}
         <div className="home-divider"></div>
       </div>
 
       {/* Footer Section */}
       <footer className="home-contact">
+
+        {/* Contact information */}
         <h2>Contact Us</h2>
         <p>
           <strong>Email:</strong> support@bookfinder.com
