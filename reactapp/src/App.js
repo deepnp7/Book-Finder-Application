@@ -8,6 +8,9 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import HomePage from "./Components/HomePage";
 import ErrorPage from "./Components/ErrorPage";
+import ForgotPassword from "./Components/ForgotPassword";
+import VerifyOtp from "./Components/VerifyOtp";
+import ResetPassword from "./Components/ResetPassword";
 
 /* Private-route wrapper */
 import PrivateRoute from "./Components/PrivateRoute";
@@ -41,6 +44,10 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
 
         {/* If someone attempts to visit root while already authenticated */}
         <Route path="/redirect" element={<RedirectIfAuthenticated />} />
@@ -50,7 +57,6 @@ function App() {
           {/* Navbar acts as a layout (contains nested links/routes) */}
           <Route path="/bookrecommender">
             <Route index element={<Navigate to="home" replace />} />
-
             <Route
               path="home"
               element={
@@ -60,7 +66,6 @@ function App() {
                 </div>
               }
             />
-
             <Route path="add" element={<BookForm />} />
             <Route path="view" element={<ViewBook />} />
             <Route path="edit/:id" element={<BookForm />} />
