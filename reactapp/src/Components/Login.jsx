@@ -132,6 +132,10 @@ function Login() {
 
             <button type="submit" className="login-btn">Login</button>
           </form>
+          <p className="forgot-link">
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </p>
+
 
           <p className="login-footer">
             Don't have an account? <Link to="/signup" className="signup-link">Signup</Link>

@@ -22,8 +22,8 @@ const ViewBook = () => {
   // Fetch books 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const safeAxiosGet = axios.get ? axios.get : () => Promise.resolve({ data: [] })
-    safeAxiosGet(`${API_BASE_URL}api/books`, {
+    // const safeAxiosGet = axios.get ? axios.get : () => Promise.resolve({ data: [] })
+    axios.get(`${API_BASE_URL}api/books`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
