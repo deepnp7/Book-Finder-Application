@@ -12,7 +12,7 @@ namespace dotnetapp.Models
         public string Email { get; set; }
 
         [Required]
-        public string Password { get; set; } 
+        public string Password { get; set; }
 
         [Required]
         public string Username { get; set; }
@@ -22,6 +22,9 @@ namespace dotnetapp.Models
 
         [Required]
         public string UserRole { get; set; } // "BookRecommender" or "BookReader"
+        public string? ResetOtp { get; set; }
+        public DateTime? OtpExpiryTime { get; set; }
+
     }
 }
 

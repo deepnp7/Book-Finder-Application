@@ -4,14 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Data
 {
+    // DbContext that includes ASP.NET Identity tables + custom tables
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+            : base(options) // Pass options to IdentityDbContext
         {
         }
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<User> Users { get; set; }
+        // Custom Books table
+        public DbSet<Book> Books { get; set; } 
+        // Custom Users table (separate from Identity)
+        public DbSet<User> Users { get; set; } 
     }
 }
