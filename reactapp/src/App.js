@@ -43,7 +43,7 @@ const RedirectIfAuthenticated = () => {
   return <Navigate to="home" replace />;
 };
 
-const App=()=> {
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -62,7 +62,7 @@ const App=()=> {
         <Route element={<PrivateRoute allowedRoles={["BookRecommender"]} />}>
           <Route path="/bookrecommender">
 
-{/* Default redirect to /home */}
+            {/* Default redirect to /home */}
             <Route index element={<Navigate to="home" replace />} />
 
             {/* Home with Navbar wrapper */}
