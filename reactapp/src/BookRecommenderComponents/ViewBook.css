@@ -1,227 +1,569 @@
-/* ===== Container ===== */
+
+/* PAGE BACKGROUND */
 .viewbook-container {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* ===== Page Title ===== */
-.viewbook-container h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #333;
+    min-height: 100vh;
+    padding-top: 90px; /* navbar space */
+    background-image: url("/public/Back6.jpeg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow-x: hidden;
+    font-family: "Segoe UI", Tahoma;
+  }
+  
+  /* Overlay glass */
+  .viewbook-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Particle animation */
+  .particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255,255,255,0.75);
+    border-radius: 50%;
+    animation: floatUp 9s linear infinite;
+    z-index: 0;
+  }
+  
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0.5; }
+    70% { opacity: 1; }
+    100% { transform: translateY(-600px); opacity: 0; }
+  }
+  
+  /* Heading */
+  .page-title {
     text-align: center;
-}
-
-/* ===== Search Bar ===== */
-.search-bar {
-    width: 250px;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    font-size: 2rem;
+    color: #e3e8dc;
+    font-weight: 800;
+    margin-bottom: 30px;
+    z-index: 2;
+    position: relative;
+  }
+  
+  /* Perfect Responsive Glass Card Grid */
+  .book-card-grid {
+    width: 100%;
+    max-width: 1400px;       /* keeps cards centered & neat */
+    margin: 40px auto 60px;  /* centers the grid beautifully */
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    
+    gap: 28px;               /* increased spacing for cleaner look */
+    padding: 0 20px;
+    
+    position: relative;      /* restore proper positioning */
+    z-index: 2;
+  }
+  
+  
+  /* Smaller Glass Cards */
+  .book-card {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 14px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    max-width: 300px;        /*  Reduced width */
+    margin: auto;
+  }
+  
+  .book-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  }
+  
+  /* Smaller Cover */
+  .book-cover {
+    width: 100%;
+    height: 180px;          /*  Reduced height */
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  
+  /* Smaller text and spacing */
+  .book-info h3 {
+    color: #e3e8dc;
+    margin: 4px 0;
+    font-size: 1.1rem;       /* was 1.25 */
+  }
+  
+  .author {
+    color: #d0d0d0;
+    margin-bottom: 8px;      /* was 10px */
     font-size: 0.95rem;
-}
-
-/* ===== Table Styling ===== */
-.book-table {
-    width: 95%;
-    border-collapse: collapse;
+  }
+  
+  /* Tag Container */
+  .tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
     margin-top: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-}
-
-.book-table th,
-.book-table td {
-    border: 1px solid #ddd;
+  }
+  
+  /* Modern Glass Tags */
+  .tag {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  
+    color: #e8f8f0;     /* soft light text */
+    border-radius: 18px;
+  
+    background: rgba(255, 255, 255, 0.12);  /* soft glass */
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  
+    box-shadow: 
+      0 2px 6px rgba(0, 0, 0, 0.25),
+      inset 0 0 8px rgba(120, 255, 196, 0.25);
+  
+    transition: 0.25s ease;
+  }
+  
+  /* Hover Glow */
+  .tag:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.35),
+      0 0 12px rgba(118, 255, 196, 0.5);
+  }
+  
+  
+  /* Buttons */
+  .actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    flex: 1;
+    padding: 6px 0;         /* smaller buttons */
+    border-radius: 8px;
+    font-size: 0.85rem;     /* smaller font */
+  }
+  
+  
+  /* Buttons */
+  .actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 14px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.2s ease;
+  }
+  
+  .edit-btn {
+    background: #1a3c2e;
+    color: #e3e8dc;
+  }
+  
+  .edit-btn:hover {
+    background: #0d241a;
+  }
+  
+  .delete-btn {
+    background: #8b0000;
+    color: #fff;
+  }
+  
+  .delete-btn:hover {
+    background: #b30000;
+  }
+  
+  /* EDIT MODAL — Fullscreen Overlay */
+  .edit-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);  /* darker fog */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    z-index: 9999;  /* ABOVE EVERYTHING */
+    animation: fadeInModal 0.3s ease;
+  }
+  
+  @keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* GLASS CARD */
+  .edit-content {
+    width: 420px;
+    padding: 32px;
+  
+    background: rgba(255, 255, 255, 0.10);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 18px;
+  
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.45),
+      0 0 25px rgba(118, 255, 196, 0.25);
+  
+    animation: modalPopUp 0.35s ease-out;
+  }
+  
+  @keyframes modalPopUp {
+    0% { transform: scale(0.85) translateY(20px); opacity: 0; }
+    60% { transform: scale(1.03) translateY(-4px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); }
+  }
+  
+  /* Title */
+  .edit-content h3 {
+    text-align: center;
+    color: #eafff4;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-shadow: 0 0 12px rgba(118, 255, 196, 0.4);
+  }
+  
+  /* INPUT FIELDS — Floating Glass Inputs */
+  .edit-content input {
+    width: 100%;
+    padding: 12px 14px;
+  
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.25);
+  
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(4px);
+  
+    color: #eafff7;
+    font-size: 1rem;
+  
+    margin-bottom: 14px;
+    transition: 0.25s ease;
+  }
+  
+  .edit-content input:focus {
+    border-color: #76ffc4;
+    box-shadow: 0 0 12px rgba(118, 255, 196, 0.6);
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  /* BUTTONS */
+  .edit-buttons {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  
+  /* SAVE BUTTON — Green Glow */
+  .save {
+    flex: 1;
     padding: 12px;
+  
+    background: linear-gradient(135deg, #1a3c2e, #0f271e);
+    color: #e3f8df;
+    border: none;
+    border-radius: 10px;
+  
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  
+    box-shadow: 0 6px 18px rgba(118, 255, 196, 0.35);
+  }
+  
+  .save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(118, 255, 196, 0.5);
+    background: #0d241a;
+  }
+  
+  /* CANCEL BUTTON — Soft Red */
+  .cancel {
+    flex: 1;
+    padding: 12px;
+  
+    background: rgba(255, 90, 90, 0.15);
+    color: #ffb3b3;
+    border: 1px solid rgba(255, 90, 90, 0.35);
+    border-radius: 10px;
+  
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  
+    box-shadow: 0 6px 18px rgba(255, 90, 90, 0.2);
+  }
+  
+  .cancel:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 90, 90, 0.25);
+    box-shadow: 0 8px 22px rgba(255, 90, 90, 0.4);
+  }
+  
+  
+  /* SUCCESS MODAL — Fullscreen Overlay */
+  .success-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    z-index: 9999; /* ABOVE EVERYTHING */
+    animation: fadeSuccessIn 0.25s ease;
+  }
+  
+  @keyframes fadeSuccessIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* SUCCESS BOX — Bright Frosted Glass + Neon Glow */
+  .success-box {
+    min-width: 340px;
+    padding: 34px 36px;
+  
+    background: rgba(255, 255, 255, 0.20);
+    border: 1.8px solid rgba(255, 255, 255, 0.35);
+    border-radius: 18px;
+  
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  
+    box-shadow:
+      0 0 35px rgba(118, 255, 196, 0.4),
+      0 12px 40px rgba(0, 0, 0, 0.45);
+  
     text-align: center;
+    animation: popSuccess 0.35s ease-out;
+  }
+  
+  @keyframes popSuccess {
+    0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+    60% { transform: scale(1.06) translateY(-4px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); }
+  }
+  
+  /* Title */
+  .success-box h3 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  
+    color: #eafff6;
+    text-shadow: 0 0 10px rgba(118, 255, 196, 0.5);
+  }
+  
+  /* Subtitle */
+  .success-box p {
+    font-size: 1.05rem;
+    color: #f0fff8;
+    opacity: 0.95;
+    margin-bottom: 18px;
+  }
+  
+  /* SUCCESS BUTTON — Bright Aqua Glow */
+  .success-box .close {
+    padding: 12px 26px;
+  
+    background: linear-gradient(135deg, #1a3c2e, #0f271e);
+    color: #e9fff4;
+  
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 600;
+  
+    box-shadow:
+      0 6px 20px rgba(118, 255, 196, 0.45),
+      0 0 12px rgba(118, 255, 196, 0.35);
+  
+    transition: 0.25s ease;
+  }
+  
+  .success-box .close:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 10px 26px rgba(118, 255, 196, 0.55),
+      0 0 16px rgba(118, 255, 196, 0.5);
+    background: #0c1f18;
+  }
+  /* =============================
+        DELETE CONFIRMATION MODAL
+  ============================= */
+  
+  .delete-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeSuccessIn 0.25s ease-in-out;
+  }
+  
+  .delete-box {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 32px;
+    border-radius: 16px;
+    width: 350px;
+    text-align: center;
+    backdrop-filter: blur(14px);
+    box-shadow: 
+      0 0 35px rgba(255, 120, 120, 0.35),
+      0 12px 40px rgba(0,0,0,0.45);
+    animation: popSuccess 0.35s ease-out;
+  }
+  
+  .delete-box h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffe5e5;
+    text-shadow: 0 0 8px rgba(255,120,120,0.4);
+  }
+  
+  .delete-box p {
+    margin-top: 6px;
+    font-size: 1rem;
+    color: #ffdada;
+  }
+  
+  .delete-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  
+  .confirm-delete {
+    padding: 10px 20px;
+    background: #8b0000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+  
+  .confirm-delete:hover {
+    background: #b30000;
+    transform: translateY(-2px);
+  }
+  
+  .cancel-delete {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+  
+  .cancel-delete:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+  
+  
+  /* ==== CUSTOM FILE INPUT WRAPPER ==== */
+  .file-input-wrapper {
+    margin: 12px 0 16px;
+    width: 100%;
+  }
+  
+  /* Label styling (matches your theme) */
+  .file-label {
+    font-weight: 600;
+    color: #eafff4;
+    margin-bottom: 6px;
+    display: block;
+  }
+  
+  /* Hide the default ugly input */
+  .file-input {
+    opacity: 0;
+    height: 0;
+    width: 0;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  /* Custom file button */
+  .custom-file-btn {
+    display: inline-block;
+    padding: 5px 10px;
+  
+    background: rgba(26, 60, 46, 0.85);     /* forest green glass */
+    color: #eafff4;
+  
+    border-radius: 10px;
     font-size: 0.95rem;
-}
-
-.book-table th {
-    background-color: #007bff;
-    color: #fff;
     font-weight: 600;
-}
-
-.book-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.book-cover {
-    max-width: 80px;
-    height: auto;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* ===== No Records Message ===== */
-.no-records {
-    text-align: center;
-    font-size: 1rem;
-    color: #666;
-    padding: 20px;
-}
-
-/* ===== Action Buttons ===== */
-.edit-btn,
-.delete-btn {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 4px;
     cursor: pointer;
-    margin: 0 5px;
-}
-
-.edit-btn {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.delete-btn {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-.edit-btn:hover,
-.delete-btn:hover {
-    opacity: 0.9;
-}
-
-/* ===== Edit Modal ===== */
-.edit-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.edit-form {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 400px;
-}
-
-.edit-form h3 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: #333;
-}
-
-.edit-form label {
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.edit-form input[type="text"],
-.edit-form input[type="date"],
-.edit-form input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-.error {
-    color: red;
+  
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+  
+    box-shadow: 
+      0 4px 12px rgba(0,0,0,0.35),
+      inset 0 0 10px rgba(118,255,196,0.25);
+  
+    transition: 0.25s ease;
+  }
+  
+  /* Hover glow */
+  .custom-file-btn:hover {
+    background: rgba(15, 30, 24, 0.95);
+    transform: translateY(-2px);
+  
+    box-shadow:
+      0 6px 18px rgba(118,255,196,0.45),
+      inset 0 0 12px rgba(118,255,196,0.35);
+  }
+  
+  /* File name text */
+  .file-name {
+    margin-left: 10px;
+    color: #d8fcef;
     font-size: 0.85rem;
-    margin-bottom: 10px;
-}
-
-.edit-btn-group {
-    display: flex;
-    justify-content: space-between;
-}
-
-.save-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    background-color: #6c757d;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* ===== Success Modal ===== */
-.success-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.success-content {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.close-btn {
-    margin-top: 15px;
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* ===== Delete Confirmation Modal ===== */
-.confirm-modal-content {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.confirm-btn {
-    background-color: #dc3545;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    margin: 10px;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    background-color: #6c757d;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    margin: 10px;
-    cursor: pointer;
-}
+  }
+  
