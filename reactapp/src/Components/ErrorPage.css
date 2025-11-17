@@ -1,57 +1,153 @@
-/* Container to center content vertically and horizontally */
+/* ============================================================
+   BASE CONTAINER
+============================================================ */
 .error-container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9; /* Light gray background */
+
+  background: url('/public/Back4.jpeg') center/cover no-repeat;
+  overflow: hidden;
   font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
-/* Inner content box */
-.error-content {
+.error-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(5px);
+  z-index: 0;
+}
+
+/* ============================================================
+   PARTICLES
+============================================================ */
+.error-particle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+
+  background: rgba(118,255,196,0.9);
+  border-radius: 50%;
+  animation: floatUp 10s infinite ease-in-out;
+  z-index: 0;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.5); opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-800px) scale(1.3); opacity: 0; }
+}
+
+/* ============================================================
+   ERROR CARD
+============================================================ */
+.error-card {
+  position: relative;
+  z-index: 5;
+
+  width: 430px;
+  padding: 40px 35px;
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.2);
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.55),
+    0 0 25px rgba(118,255,196,0.18);
+
   text-align: center;
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+
+  animation: popIn 0.8s ease forwards;
+  transform: translateY(40px);
+  opacity: 0;
 }
 
-/* Error image styling */
-.error-image {
-  width: 120px;
-  height: auto;
-  margin-bottom: 20px;
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Title styling */
-.error-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #8b0000; /* Dark red for emphasis */
+/* ============================================================
+   ANIMATED 404
+============================================================ */
+.error-404 {
+  font-size: 5rem;
+  font-weight: 900;
+
+  background: linear-gradient(90deg, #76ffc4, #e8fff6);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  text-shadow: 0 0 25px rgba(118,255,196,0.6);
+
+  animation: glow 2.5s ease-in-out infinite;
   margin-bottom: 10px;
 }
 
-/* Message styling */
-.error-message {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 20px;
+@keyframes glow {
+  0% { text-shadow: 0 0 20px rgba(118,255,196,0.3); transform: scale(1); }
+  50% { text-shadow: 0 0 40px rgba(118,255,196,0.7); transform: scale(1.05); }
+  100% { text-shadow: 0 0 20px rgba(118,255,196,0.3); transform: scale(1); }
 }
 
-/* Button styling */
-.error-button {
-  background-color: #8b0000; /* Dark red */
-  color: #fff;
+/* ============================================================
+   IMAGE
+============================================================ */
+.error-img {
+  width: 110px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 15px rgba(118,255,196,0.35));
+}
+
+/* ============================================================
+   TEXT
+============================================================ */
+.error-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #76ffc4;
+  margin-bottom: 8px;
+}
+
+.error-text {
+  font-size: 1.05rem;
+  color: #dcdcdc;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   BUTTON
+============================================================ */
+.error-btn {
+  width: 100%;
+  padding: 14px 20px;
+
+  background: #1a3c2e;
+  color: #e3e8dc;
+
   border: none;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 12px;
+
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+
+  transition: 0.25s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
-.error-button:hover {
-  background-color: #a40000; /* Slightly lighter red on hover */
+.error-btn:hover {
+  background: #0d241a;
+  transform: translateY(-3px);
 }

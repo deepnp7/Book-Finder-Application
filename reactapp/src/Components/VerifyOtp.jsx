@@ -2,27 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import API_BASE_URL from "../apiConfig";
+import "./VerifyOtp.css";
 
 const VerifyOtp = () => {
   // State to store the OTP entered by the user
   const [otp, setOtp] = useState("");
-
-  // Extract query parameters from the URL (email comes from previous page)
+  const [showModal, setShowModal] = useState(false); //  Modal state
   const [params] = useSearchParams();
   const email = params.get("email");
 
   // For navigation after successful verification
   const navigate = useNavigate();
 
-  // Function to verify OTP by calling backend API
+  const particles = Array.from({ length: 25 });
+
   const handleVerify = async () => {
     try {
       // API call to verify OTP with email and otp
       await axios.post(`${API_BASE_URL}api/verify-otp`, { email, otp });
 
-      // If OTP verified → alert and navigate to reset-password page
-      alert("OTP verified successfully.");
-      navigate(`/reset-password?email=${email}&otp=${otp}`);
+      //  Open success modal
+      setShowModal(true);
     } catch (err) {
       // If backend sends specific message → show it, else show fallback message
       const msg = err.response?.data?.message || "Invalid OTP.";
@@ -30,23 +30,51 @@ const VerifyOtp = () => {
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    navigate(`/reset-password?email=${email}&otp=${otp}`); // Move to next page
+  };
+
   return (
     <div className="otp-container">
-      <h2>Verify OTP</h2>
+      {/* Floating Particles */}
+      {particles.map((_, i) => (
+        <div
+          key={i}
+          className="otp-particle"
+          style={{
+            left: Math.random() * 100 + "vw",
+            top: Math.random() * 100 + "vh",
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${8 + Math.random() * 5}s`,
+          }}
+        />
+      ))}
 
-      {/* Display the email where OTP was sent */}
-      <p>OTP sent to: {email}</p>
+      <div className="otp-card">
+        <h2>Verify OTP</h2>
+        <p>OTP sent to: <strong>{email}</strong></p>
 
-      {/* Input field for the user to enter OTP */}
-      <input
-        type="text"
-        placeholder="Enter OTP"
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-      />
+        <input
+          type="text"
+          placeholder="Enter OTP"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+        />
 
-      {/* Button to trigger OTP verification */}
-      <button onClick={handleVerify}>Verify</button>
+        <button onClick={handleVerify}>Verify</button>
+      </div>
+
+      {/* SUCCESS MODAL */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>OTP Verified Successfully 🎉</h3>
+            <p>Redirecting you to reset your password.</p>
+            <button onClick={closeModal}>Continue</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

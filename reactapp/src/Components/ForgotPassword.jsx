@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../apiConfig";
+import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
   // Manage email input state
@@ -9,7 +10,9 @@ const ForgotPassword = () => {
 
   const navigate = useNavigate();
 
-  // Handle form submission → send email to backend to trigger OTP
+  // Generate floating particles
+  const particles = Array.from({ length: 25 });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,18 +32,37 @@ const ForgotPassword = () => {
 
   return (
     <div className="forgot-container">
-      <h2>Forgot Password</h2>
 
-      {/* Email Input Field */}
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      
-      {/* Submit Button to Request OTP */}
-      <button onClick={handleSubmit}>Send OTP</button>
+      {/* Background Particles */}
+      {particles.map((_, i) => (
+        <div
+          key={i}
+          className="forgot-particle"
+          style={{
+            left: Math.random() * 100 + "vw",
+            top: Math.random() * 100 + "vh",
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${8 + Math.random() * 5}s`,
+          }}
+        />
+      ))}
+
+      {/* Glassmorphic Card */}
+      <div className="forgot-card">
+        <h2>Forgot Password</h2>
+
+        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <input
+            type="email"
+            placeholder="Enter Your Email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <button type="submit">Send OTP</button>
+        </form>
+      </div>
     </div>
   );
 }

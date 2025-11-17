@@ -5,44 +5,56 @@ import "./ErrorPage.css";
 const ErrorPage = () => {
   const navigate = useNavigate();
 
-  // Handle button click → navigate user to correct home page based on role
   const handleGoHome = () => {
     const role = localStorage.getItem("role");
 
-    // Redirect the user depending on their saved role
     if (role === "BookRecommender") navigate("/bookrecommender/home");
     else if (role === "BookReader") navigate("/bookreader/home");
-
-    // If no role found → user not logged in → send to login page
     else navigate("/");
   };
 
+  const particles = Array.from({ length: 25 });
+
   return (
     <div className="error-container">
-      <div className="error-content">
 
-        {/* Error illustration image */}
+      {/* Floating particles */}
+      {particles.map((_, i) => (
+        <div
+          key={i}
+          className="error-particle"
+          style={{
+            left: Math.random() * 100 + "vw",
+            top: Math.random() * 100 + "vh",
+            animationDelay: `${Math.random() * 4}s`,
+            animationDuration: `${8 + Math.random() * 6}s`,
+          }}
+        />
+      ))}
+
+      <div className="error-card">
+
+        {/* ANIMATED 404 */}
+        <h1 className="error-404">404</h1>
+
         <img
-          src="/alert.png"
-          alt="Error Illustration"
-          className="error-image"
+          src="/alert.jpeg"
+          alt="Error Icon"
+          className="error-img"
         />
 
-        {/* Error heading */}
-        <h1 className="error-title">Oops! Something went wrong</h1>
+        <h1 className="error-title">Page Not Found</h1>
 
-        {/* Short explanation message */}
-        <p className="error-message">
-          Please try again later or return to the home page.
+        <p className="error-text">
+          The page you're looking for doesn't exist or something went wrong.
         </p>
 
-        {/* Redirect button */}
-        <button className="error-button" onClick={handleGoHome}>
-          Go Back Home
+        <button className="error-btn" onClick={handleGoHome}>
+          ⬅ Go Back Home
         </button>
       </div>
     </div>
   );
-};
+}
 
 export default ErrorPage;
