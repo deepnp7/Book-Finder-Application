@@ -15,6 +15,10 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
 
+  // 🔥 Show/Hide Password Toggle
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => setShowPassword((prev) => !prev);
+
   // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,16 +34,28 @@ function Login() {
     ) {
       newErrors.email = "Invalid email format";
     }
+
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     }
+
     return newErrors;
   };
 
-  // Handle login submission
+  // JWT decoding helper
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch {
+      return null;
+    }
+  };
+
+  // Submit login form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError("");
+
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -48,48 +64,40 @@ function Login() {
 
     try {
       const response = await axios.post(`${API_BASE_URL}api/login`, formData);
+
       if (response.data && response.data.status === "Success") {
         const { token } = response.data;
-        // Decode token (or extract role from backend response)
         const decoded = parseJwt(token);
-        const userRole = decoded?.role || decoded?.UserRole || decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+        const userRole =
+          decoded?.role ||
+          decoded?.UserRole ||
+          decoded?.[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ];
+
         const userName = decoded?.username || decoded?.UserName || decoded?.sub;
 
-        // Store JWT in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("role", userRole);
         localStorage.setItem("username", userName);
 
-        // Redirect based on role
-        if (userRole === "BookRecommender") {
-          navigate("/bookrecommender/home");
-        } else if (userRole === "BookReader") {
-          navigate("/bookreader/home");
-        } else {
-          setServerError("Invalid role detected. Please contact support.");
-        }
+        if (userRole === "BookRecommender") navigate("/bookrecommender/home");
+        else if (userRole === "BookReader") navigate("/bookreader/home");
+        else setServerError("Invalid role detected. Please contact support.");
       } else {
         setServerError("Invalid email or password");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       setServerError("Login failed. Please try again later.");
-    }
-  };
-
-  // Decode JWT to extract role
-  const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split(".")[1]));
-    } catch (e) {
-      return null;
     }
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
-        {/* Left Section */}
+        {/* Left Side */}
         <div className="login-left">
           <h2 className="login-subtitle">BookFinder</h2>
           <p className="login-description">
@@ -97,13 +105,15 @@ function Login() {
           </p>
         </div>
 
-        {/* Right Section */}
+        {/* Right Side */}
         <div className="login-right">
           <h1 className="login-title">Login</h1>
 
           {serverError && <p className="error-message">{serverError}</p>}
 
           <form onSubmit={handleSubmit} noValidate>
+            
+            {/* Email */}
             <div className="form-group">
               <label>Email</label>
               <input
@@ -114,36 +124,93 @@ function Login() {
                 onChange={handleChange}
                 className={errors.email ? "input-error" : ""}
               />
-              {errors.email && <span className="error-text">{errors.email}</span>}
+              {errors.email && (
+                <span className="error-text">{errors.email}</span>
+              )}
             </div>
 
-            <div className="form-group">
+            {/* Password + Eye Toggle */}
+            <div className="form-group password-group">
               <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleChange}
-                className={errors.password ? "input-error" : ""}
-              />
-              {errors.password && <span className="error-text">{errors.password}</span>}
+              <div className="password-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={errors.password ? "input-error" : ""}
+                />
+
+                {/* Eye Button */}
+                <button
+                  type="button"
+                  className={`eye-btn ${showPassword ? "active" : ""}`}
+                  onClick={togglePassword}
+                >
+                  {showPassword ? (
+                    /* Eye open */
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  ) : (
+                    /* Eye closed */
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.33 21.33 0 0 1 5.06-6.04" />
+                      <path d="M1 1l22 22" />
+                      <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+
+              {errors.password && (
+                <span className="error-text">{errors.password}</span>
+              )}
             </div>
 
-            <button type="submit" className="login-btn">Login</button>
-          </form>
-          <p className="forgot-link">
-            <Link to="/forgot-password">Forgot Password?</Link>
-          </p>
+            {/* Forgot Password */}
+            <p className="forgot-link">
+              <Link to="/forgot-password">Forgot Password?</Link>
+            </p>
 
+            {/* Submit */}
+            <button type="submit" className="login-btn">
+              Login
+            </button>
+          </form>
 
           <p className="login-footer">
-            Don't have an account? <Link to="/signup" className="signup-link">Signup</Link>
+            Don't have an account?{" "}
+            <Link to="/signup" className="signup-link">
+              Signup
+            </Link>
           </p>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Login;

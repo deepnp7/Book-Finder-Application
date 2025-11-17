@@ -1,0 +1,234 @@
+/* ============================================================
+   GLOBAL
+============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: #0a0f0d; /* deep green-tinted black */
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #e6e6e6;
+  }
+  
+  /* ============================================================
+     MAIN CONTAINER
+  ============================================================ */
+  .otp-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    overflow: hidden;
+  
+    background-image: url('/public/Back3.jpeg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Dark transparent overlay */
+  .otp-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    z-index: 0;
+  }
+  
+  /* ============================================================
+     PARTICLES
+  ============================================================ */
+  .otp-particle {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    animation: otpFloatUp 10s infinite ease-in-out;
+    z-index: 0;
+  }
+  
+  @keyframes otpFloatUp {
+    0% { transform: translateY(0) scale(0.5); opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-800px) scale(1.4); opacity: 0; }
+  }
+  
+  /* ============================================================
+     OTP CARD
+  ============================================================ */
+  .otp-card {
+    position: relative;
+    width: 420px;
+    padding: 34px 32px;
+  
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+  
+    box-shadow:
+      0 12px 35px rgba(0,0,0,0.55),
+      0 0 20px rgba(120,255,200,0.15);
+  
+    text-align: center;
+    z-index: 2;
+  
+    animation: otpPopIn 0.8s ease forwards;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  
+  @keyframes otpPopIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ============================================================
+     HEADINGS & TEXT
+  ============================================================ */
+  .otp-card h2 {
+    color: #76ffc4;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-shadow: 0 0 6px rgba(118,255,196,0.4);
+  }
+  
+  .otp-card p {
+    color: #d6d6d6;
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+  
+  /* ============================================================
+     INPUT BOX
+  ============================================================ */
+  .otp-card input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1.05rem;
+  
+    border-radius: 10px;
+    border: 2px solid #cfcfcf;
+    outline: none;
+  
+    background: #ffffff;
+    transition: 0.3s ease;
+  }
+  
+  .otp-card input:focus {
+    border-color: #1a3c2e;
+    box-shadow: 0 0 10px rgba(26,60,46,0.4);
+  }
+  
+  /* ============================================================
+     BUTTON
+  ============================================================ */
+  .otp-card button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+  
+    background: #1a3c2e;
+    color: #e3e8dc;
+    border: none;
+    border-radius: 10px;
+  
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+  
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+  }
+  
+  .otp-card button:hover {
+    background: #0d241a;
+    transform: translateY(-3px);
+  }
+  
+  /* Make sure everything stays centered on small screens */
+  @media (max-width: 480px) {
+    .otp-card {
+      width: 90%;
+      padding: 26px 20px;
+    }
+  }
+  /* ==========================
+      SUCCESS MODAL
+========================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: #0d241a;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  width: 340px;
+
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+
+  animation: pop 0.4s ease;
+  color: #e3e8dc;
+}
+
+.modal h3 {
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.modal p {
+  margin-bottom: 18px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.modal button {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  background: #1a3c2e;
+  color: #e3e8dc;
+  font-weight: 600;
+
+  transition: 0.25s ease;
+}
+
+.modal button:hover {
+  background: #0f241a;
+  transform: translateY(-2px);
+}
+
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+  

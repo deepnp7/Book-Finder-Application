@@ -2,36 +2,37 @@ import React from "react";
 import "./HomePage.css";
 
 function HomePage() {
+  const particles = Array.from({ length: 25 });
+
   return (
     <div className="home-container">
-      {/* Cover Image Section */}
-      <div className="home-image-section">
-        <img
-          src="/bookfindercoverimage.jpeg"
-          alt="Book Finder Cover"
-          className="home-cover-image"
+      {/* Floating particles */}
+      {particles.map((_, i) => (
+        <div
+          key={i}
+          className="home-particle"
+          style={{
+            left: Math.random() * 100 + "vw",
+            top: Math.random() * 100 + "vh",
+            animationDelay: `${Math.random() * 6}s`,
+          }}
         />
-        <h1 className="home-title">BookFinder</h1>
-      </div>
+      ))}
 
-      {/* Information Section */}
-      <div className="home-content">
-        <p className="home-subtitle">
-          An app to discover, explore, and find books tailored to your reading preferences.
+      {/* Glass Card */}
+      <div className="home-card">
+        <h1 className="home-heading">BookFinder</h1>
+        <p className="home-tagline">
+          Discover, explore, and find books crafted perfectly for your reading journey.
         </p>
 
         <div className="home-divider"></div>
       </div>
 
-      {/* Footer Section */}
-      <footer className="home-contact">
-        <h2>Contact Us</h2>
-        <p>
-          <strong>Email:</strong> support@bookfinder.com
-        </p>
-        <p>
-          <strong>Phone:</strong> +91 98765 43210
-        </p>
+      {/* Footer */}
+      <footer className="home-footer">
+        <p><strong>Email:</strong>bookfinderstatuscode6@gmail.com</p>
+        <p><strong>Phone:</strong> +91 98765 43210</p>
       </footer>
     </div>
   );

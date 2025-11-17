@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import "./App.css";
 
 /* Public components */
+import LandingPage from "./Components/LandingPage";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import HomePage from "./Components/HomePage";
@@ -42,7 +43,8 @@ function App() {
     <Router>
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage/>}/>
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />

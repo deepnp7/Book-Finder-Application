@@ -1,120 +1,391 @@
-/* Container centers the card */
+/* ============================================================
+    GLOBAL RESET + FONT
+============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ============================================================
+    BACKGROUND (3D PARALLAX + PARTICLES + ANIMATED FOG)
+============================================================ */
 .login-container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4; /* Light gray background */
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+
+  /* Background Image */
+  background-image: url('/public/Background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* 3D Parallax Effect */
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
-/* Card layout */
+/* Dark overlay */
+.login-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 0;
+}
+
+/* Floating fog layer */
+.login-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/public/Back2.jpeg");
+  opacity: 0.18;
+  animation: fogMove 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes fogMove {
+  from { transform: translateX(-400px); }
+  to { transform: translateX(400px); }
+}
+
+/* Floating light particles */
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: floatUp 10s infinite ease-in-out;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.7); opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-800px) scale(1.3); opacity: 0; }
+}
+
+
+/* ============================================================
+    LOGIN CARD (Premium Glassmorphism + Glow + Entrance Motion)
+============================================================ */
 .login-card {
+  position: relative;
+  z-index: 5;
+
   display: flex;
-  width: 800px;
-  border-radius: 12px;
+  width: 900px;
+  height: 520px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  /* Glass effect */
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(16px);
+
+  /* Ambient glow */
+  box-shadow: 0 0 45px rgba(255, 255, 255, 0.12);
+
+  /* Smooth entrance animation */
+  animation: cardReveal 1s ease forwards;
+  transform: translateY(40px);
+  opacity: 0;
 }
 
-/* Left section */
-.login-card .login-subtitle,
-.login-card .login-description {
-  color: #fff;
+@keyframes cardReveal {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
+/* Bright side glow */
+.login-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.15),
+    transparent 60%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+
+/* ============================================================
+    LEFT SIDE — Animated Gradient + Shine Sweep
+============================================================ */
 .login-card > div:first-child {
   flex: 1;
-  background: linear-gradient(135deg, #00c6ff, #0072ff); /* Teal gradient */
-  padding: 40px;
+  padding: 45px;
+
+  /* Reactive gradient */
+  background: linear-gradient(145deg, #0f1e14, #263a2c, #40594c);
+  background-size: 300% 300%;
+  animation: gradientFlow 9s ease infinite;
+
+  color: #e3e8dc;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 30%; }
+  50% { background-position: 100% 70%; }
+  100% { background-position: 0% 30%; }
+}
+
+/* Shine sweep */
+.login-card > div:first-child::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+
+  transform: rotate(25deg);
+  animation: sweep 6s infinite linear;
+}
+
+@keyframes sweep {
+  0% { transform: translateX(-150%) rotate(25deg); }
+  100% { transform: translateX(150%) rotate(25deg); }
 }
 
 .login-subtitle {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 2.6rem;
+  font-weight: 800;
+  margin-bottom: 18px;
 }
 
 .login-description {
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.95;
 }
 
-/* Right section */
+
+/* ============================================================
+    RIGHT SIDE — Clean & Minimal
+============================================================ */
 .login-card > div:last-child {
   flex: 1;
-  background-color: #fff;
-  padding: 40px;
+  padding: 45px;
+  background: rgba(255, 255, 255, 0.95);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  position: relative;
 }
 
 .login-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 20px;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 25px;
+  color: #0f1e14;
 }
 
-/* Form styling */
+
+/* ============================================================
+    FORM + NEON INPUTS
+============================================================ */
 .form-group {
   margin-bottom: 20px;
 }
 
 .form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
   display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
+  color: #1a3c2e;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 8px;
+
+  background: #f4f4f4;
+  border: 2px solid #c6c6c6;
+
+  transition: 0.3s;
   font-size: 1rem;
+}
+
+/* Neon focus */
+.form-group input:focus {
+  border-color: #1a3c2e;
+  box-shadow: 0 0 10px rgba(26, 60, 46, 0.5);
+  background: #fff;
 }
 
 .input-error {
-  border-color: #ff4d4d;
+  border-color: #ff4d4d !important;
 }
 
-.error-text {
-  color: #ff4d4d;
-  font-size: 0.85rem;
-}
-
-/* Login button */
+/* ============================================================
+    BUTTON — Ripple + Lift Animation
+============================================================ */
 .login-btn {
   width: 100%;
-  background-color: #007bff; /* Blue button */
-  color: #fff;
+  background: #1a3c2e;
+  color: #e3e8dc;
+
+  padding: 14px;
+  border-radius: 10px;
   border: none;
-  padding: 12px;
-  font-size: 1rem;
-  border-radius: 6px;
+
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-top: 10px;
+
+  transition: 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .login-btn:hover {
-  background-color: #0056b3;
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+  background: #0d241a;
 }
 
-/* Footer */
+/* Ripple effect */
+.login-btn:active {
+  transform: scale(0.97);
+}
+
+
+/* ============================================================
+    FOOTER
+============================================================ */
 .login-footer {
   margin-top: 20px;
-  font-size: 0.9rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #1a3c2e;
 }
 
 .signup-link {
-  color: #007bff;
-  text-decoration: none;
+  color: #1a3c2e;
+  font-weight: 700;
 }
 
 .signup-link:hover {
   text-decoration: underline;
 }
+
+/* ============================
+   PASSWORD FIELD WRAPPER
+============================ */
+.password-group {
+  position: relative;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Add spacing for the eye toggle */
+.password-wrapper input {
+  width: 100%;
+  padding-right: 50px; 
+}
+
+/* ============================
+   EYE TOGGLE BUTTON
+============================ */
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  height: 32px;
+  width: 32px;
+  border: none;
+  background: transparent;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.25s ease;
+  color: #1a3c2e;       /* Default color for SVG stroke */
+}
+
+/* Hover effect */
+.eye-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Active (show password) state */
+.eye-btn.active {
+  color: #0a100e;
+  background: rgba(26, 60, 46, 0.1);
+}
+
+/* Ensure SVG icon scales properly */
+.eye-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  display: block;
+}
+
+/* Keyboard accessibility */
+.eye-btn:focus {
+  outline: 2px solid rgba(39, 55, 44, 0.4);
+  outline-offset: 2px;
+}
+.forgot-link {
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 15px;
+}
+
+.forgot-link a {
+  color: #1a3c2e;
+  font-weight: 600;
+}
+
+.forgot-link a:hover {
+  text-decoration: underline;
+}
+
+
+
+
