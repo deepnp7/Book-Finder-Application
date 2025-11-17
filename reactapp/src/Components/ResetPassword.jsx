@@ -4,12 +4,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import API_BASE_URL from "../apiConfig";
 import "./ResetPassword.css";
 
-function ResetPassword() {
+const ResetPassword = () => {
+  // State for the new password input
   const [newPassword, setNewPassword] = useState("");
   const [showModal, setShowModal] = useState(false);   //  NEW MODAL STATE
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
+  // Extract email and OTP from the URL query parameters
   const email = params.get("email");
   const otp = params.get("otp");
 
@@ -17,6 +19,7 @@ function ResetPassword() {
 
   const handleReset = async () => {
     try {
+      // Send reset request to backend
       await axios.post(`${API_BASE_URL}api/reset-password`, {
         email,
         otp,
@@ -25,6 +28,7 @@ function ResetPassword() {
 
       setShowModal(true); //  OPEN MODAL
     } catch (err) {
+      // Show backend message if available
       const msg = err.response?.data?.message || "Password reset failed.";
       alert(msg);
     }

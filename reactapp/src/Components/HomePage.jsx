@@ -26,6 +26,7 @@ function HomePage() {
           Discover, explore, and find books crafted perfectly for your reading journey.
         </p>
 
+        {/* Decorative divider line */}
         <div className="home-divider"></div>
       </div>
 

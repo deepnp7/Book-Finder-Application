@@ -1,74 +1,73 @@
+
+
 import React, { useState } from "react";
-import "./BookRecommenderNavbar.css";
 import { Link, useNavigate } from "react-router-dom";
+import { FaHome, FaBook, FaPlusCircle, FaBookReader, FaSignOutAlt, FaUser } from "react-icons/fa";
+import "./BookRecommenderNavbar.css";
+
 
 const BookRecommenderNavbar = () => {
   const navigate = useNavigate();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [logoutPopup, setLogoutPopup] = useState(false);
+
 
   const username = localStorage.getItem("username");
   const role = localStorage.getItem("role");
 
-  const handleLogoutConfirm = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("username");
-    setShowLogoutModal(false);
-    navigate("/", { replace: true });
-  };
 
   return (
-    <div className="bookfinder-container">
-      <nav className="navbar">
-        <div className="navbar-left">
-          <h2>BookFinder</h2>
-        </div>
+    <header className="navC">
+      <span className="navC-logo">BookFinder</span>
 
-        <div className="navbar-right">
-          <span className="user-info">
-            {username} / {role}
-          </span>
 
-          <Link to="/bookrecommender/home">Home</Link>
+      <nav className="navC-items">
+        <span className="navC-user">
+          <FaUser size={15} /> {username} / {role}
+        </span>
 
-          <div className="dropdown">
-            <button className="dropbtn">Book</button>
-            <div className="dropdown-content">
-              <Link to="/bookrecommender/add">Add Book</Link>
-              <Link to="/bookrecommender/view">View Books</Link>
-            </div>
-          </div>
 
-          <button
-            className="logout-btn"
-            onClick={() => setShowLogoutModal(true)}
-          >
-            Logout
+        <Link to="/bookrecommender/home" className="navC-link">
+          <FaHome size={15} /> Home
+        </Link>
+
+
+        <div className="navC-dropdown">
+          <button className="navC-dropbtn">
+            <FaBook size={14} /> Books
           </button>
+
+
+          <div className="navC-dropmenu">
+            <Link to="/bookrecommender/add">
+              <FaPlusCircle size={14} /> Add Book
+            </Link>
+            <Link to="/bookrecommender/view">
+              <FaBookReader size={14} /> View Books
+            </Link>
+          </div>
         </div>
+
+
+        <button className="navC-logout" onClick={() => setLogoutPopup(true)}>
+          <FaSignOutAlt size={15} /> Logout
+        </button>
       </nav>
 
-      {/* Logout Confirmation Modal */}
-      {showLogoutModal && (
-        <div className="logout-modal">
-          <div className="logout-modal-content">
-            <h3>Are you sure you want to logout?</h3>
-            <div className="logout-btn-group">
-              <button className="confirm-btn" onClick={handleLogoutConfirm}>
-                Yes, Logout
-              </button>
-              <button
-                className="cancel-btn"
-                onClick={() => setShowLogoutModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
+
+      {logoutPopup && (
+        <div className="navC-modal">
+          <div className="navC-box">
+            <h3>Are you sure?</h3>
+            <p>You will be logged out of your account.</p>
+            <button className="yes" onClick={() => { localStorage.clear(); navigate("/"); }}>Yes</button>
+            <button className="no" onClick={() => setLogoutPopup(false)}>Cancel</button>
           </div>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 
+
 export default BookRecommenderNavbar;
+

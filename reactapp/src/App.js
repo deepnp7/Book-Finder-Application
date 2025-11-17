@@ -25,23 +25,30 @@ import ViewBook from "./BookRecommenderComponents/ViewBook";
 import BookReaderNavbar from "./BookReaderComponents/BookReaderNavbar";
 import BookReaderViewBook from "./BookReaderComponents/BookReaderViewBook";
 
+/* 
+  Redirects logged-in users directly to their respective homepages.
+  Prevents authenticated users from revisiting login/signup screens.
+*/
 const RedirectIfAuthenticated = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
+  // If no token → redirect to login
   if (!token) return <Navigate to="/" replace />;
 
+  // Redirect user based on their saved role
   if (role === "BookRecommender") return <Navigate to="/bookrecommender/home" replace />;
   if (role === "BookReader") return <Navigate to="/bookreader/home" replace />;
 
-  // fallback
+  // Fallback redirect
   return <Navigate to="home" replace />;
 };
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
+
         {/* Public routes */}
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/login" element={<Login />} />
@@ -50,15 +57,17 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-
-        {/* If someone attempts to visit root while already authenticated */}
+        {/* If a logged-in user tries to access "/", redirect them properly */}
         <Route path="/redirect" element={<RedirectIfAuthenticated />} />
 
         {/* BookRecommender protected area */}
         <Route element={<PrivateRoute allowedRoles={["BookRecommender"]} />}>
-          {/* Navbar acts as a layout (contains nested links/routes) */}
           <Route path="/bookrecommender">
+
+            {/* Default redirect to /home */}
             <Route index element={<Navigate to="home" replace />} />
+
+            {/* Home with Navbar wrapper */}
             <Route
               path="home"
               element={
@@ -68,18 +77,24 @@ function App() {
                 </div>
               }
             />
+
+            {/* CRUD operations */}
             <Route path="add" element={<BookForm />} />
             <Route path="view" element={<ViewBook />} />
             <Route path="edit/:id" element={<BookForm />} />
             <Route path="delete/:id" element={<BookForm />} />
-          </Route>
 
+          </Route>
         </Route>
 
         {/* BookReader protected area */}
         <Route element={<PrivateRoute allowedRoles={["BookReader"]} />}>
           <Route path="/bookreader">
+
+            {/* Default redirect */}
             <Route index element={<Navigate to="home" replace />} />
+
+            {/* Home with Navbar */}
             <Route
               path="home"
               element={
@@ -89,14 +104,15 @@ function App() {
                 </div>
               }
             />
+
             <Route path="view" element={<BookReaderViewBook />} />
           </Route>
         </Route>
 
-        {/* Error / Unauthorized */}
+        {/* Error Page */}
         <Route path="/error" element={<ErrorPage />} />
 
-        {/* Fallback - unknown routes */}
+        {/* Fallback - Unknown URLs */}
         <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
     </Router>

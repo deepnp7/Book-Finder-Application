@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../apiConfig";
 import "./ForgotPassword.css";
 
-function ForgotPassword() {
+const ForgotPassword = () => {
+  // Manage email input state
   const [email, setEmail] = useState("");
+
   const navigate = useNavigate();
 
   // Generate floating particles
@@ -15,9 +17,14 @@ function ForgotPassword() {
     e.preventDefault();
 
     try {
+      // API call to backend Forgot Password endpoint
       await axios.post(`${API_BASE_URL}api/forgot-password`, { email });
+
+      // Navigate to OTP verification screen with email as query param
       navigate(`/verify-otp?email=${email}`);
     } catch (err) {
+
+      // Show backend error if present, else fallback message
       const msg = err.response?.data?.message || "Something went wrong.";
       alert(msg);
     }

@@ -7,7 +7,8 @@ import "./Signup.css";
 const Signup = () => {
   const navigate = useNavigate();
 
-  // Form state
+  // Form State
+  // Holds all input values of the signup form
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -17,6 +18,7 @@ const Signup = () => {
     userRole: "",
   });
 
+  // Stores validation errors
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -153,6 +155,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate form before sending API request
     if (!validate()) return;
 
     try {

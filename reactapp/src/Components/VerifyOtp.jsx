@@ -4,22 +4,27 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import API_BASE_URL from "../apiConfig";
 import "./VerifyOtp.css";
 
-function VerifyOtp() {
+const VerifyOtp = () => {
+  // State to store the OTP entered by the user
   const [otp, setOtp] = useState("");
   const [showModal, setShowModal] = useState(false); //  Modal state
   const [params] = useSearchParams();
   const email = params.get("email");
+
+  // For navigation after successful verification
   const navigate = useNavigate();
 
   const particles = Array.from({ length: 25 });
 
   const handleVerify = async () => {
     try {
+      // API call to verify OTP with email and otp
       await axios.post(`${API_BASE_URL}api/verify-otp`, { email, otp });
 
       //  Open success modal
       setShowModal(true);
     } catch (err) {
+      // If backend sends specific message → show it, else show fallback message
       const msg = err.response?.data?.message || "Invalid OTP.";
       alert(msg);
     }

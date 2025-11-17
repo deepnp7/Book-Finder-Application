@@ -4,18 +4,22 @@ import axios from "axios";
 import API_BASE_URL from "../apiConfig";
 import "./Login.css";
 
-function Login() {
+const Login = () => {
   const navigate = useNavigate();
 
+  // State to store form input (email, password)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  // State to store validation errors
   const [errors, setErrors] = useState({});
+
+  // State to store backend server errors
   const [serverError, setServerError] = useState("");
 
-  // 🔥 Show/Hide Password Toggle
+  // Show/Hide Password Toggle
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
@@ -27,6 +31,8 @@ function Login() {
   // Validate inputs
   const validate = () => {
     const newErrors = {};
+
+    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (
@@ -63,6 +69,7 @@ function Login() {
     }
 
     try {
+      // API call for login
       const response = await axios.post(`${API_BASE_URL}api/login`, formData);
 
       if (response.data && response.data.status === "Success") {
@@ -109,8 +116,10 @@ function Login() {
         <div className="login-right">
           <h1 className="login-title">Login</h1>
 
+          {/* Server-side error display */}
           {serverError && <p className="error-message">{serverError}</p>}
 
+          {/* Login Form */}
           <form onSubmit={handleSubmit} noValidate>
             
             {/* Email */}
