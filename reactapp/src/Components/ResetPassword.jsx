@@ -7,7 +7,11 @@ import "./ResetPassword.css";
 const ResetPassword = () => {
   // State for the new password input
   const [newPassword, setNewPassword] = useState("");
-  const [showModal, setShowModal] = useState(false);   //  NEW MODAL STATE
+
+  // Controls visibility of success modal
+  const [showModal, setShowModal] = useState(false);
+
+  // Read email and otp from URL query params
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
@@ -15,8 +19,10 @@ const ResetPassword = () => {
   const email = params.get("email");
   const otp = params.get("otp");
 
+  // Particles used for background animation
   const particles = Array.from({ length: 25 });
 
+  // Submit new password to backend
   const handleReset = async () => {
     try {
       // Send reset request to backend
@@ -26,7 +32,8 @@ const ResetPassword = () => {
         newPassword,
       });
 
-      setShowModal(true); //  OPEN MODAL
+      // On success, show confirmation modal
+      setShowModal(true);
     } catch (err) {
       // Show backend message if available
       const msg = err.response?.data?.message || "Password reset failed.";
@@ -34,6 +41,7 @@ const ResetPassword = () => {
     }
   };
 
+  // Close modal and redirect user (back to login/landing)
   const closeModal = () => {
     setShowModal(false);
     navigate("/"); // Redirect after closing modal
@@ -41,7 +49,7 @@ const ResetPassword = () => {
 
   return (
     <div className="reset-container">
-      {/* Floating particles */}
+      {/* Floating particles for animated background */}
       {particles.map((_, i) => (
         <div
           key={i}
@@ -55,6 +63,7 @@ const ResetPassword = () => {
         />
       ))}
 
+      {/* Reset password card */}
       <div className="reset-card">
         <h2>Reset Password</h2>
 
@@ -68,7 +77,7 @@ const ResetPassword = () => {
         <button onClick={handleReset}>Reset Password</button>
       </div>
 
-      {/*  SUCCESS MODAL  */}
+      {/* SUCCESS MODAL - shown after password reset */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">

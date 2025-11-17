@@ -8,11 +8,13 @@ const ForgotPassword = () => {
   // Manage email input state
   const [email, setEmail] = useState("");
 
+  // For redirecting to OTP verification page
   const navigate = useNavigate();
 
-  // Generate floating particles
+  // Generate floating particles for animated background
   const particles = Array.from({ length: 25 });
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -23,7 +25,6 @@ const ForgotPassword = () => {
       // Navigate to OTP verification screen with email as query param
       navigate(`/verify-otp?email=${email}`);
     } catch (err) {
-
       // Show backend error if present, else fallback message
       const msg = err.response?.data?.message || "Something went wrong.";
       alert(msg);
@@ -32,7 +33,6 @@ const ForgotPassword = () => {
 
   return (
     <div className="forgot-container">
-
       {/* Background Particles */}
       {particles.map((_, i) => (
         <div
@@ -47,10 +47,11 @@ const ForgotPassword = () => {
         />
       ))}
 
-      {/* Glassmorphic Card */}
+      {/* Glassmorphic Card for Forgot Password form */}
       <div className="forgot-card">
         <h2>Forgot Password</h2>
 
+        {/* Submit email to receive OTP */}
         <form onSubmit={handleSubmit} style={{ width: "100%" }}>
           <input
             type="email"

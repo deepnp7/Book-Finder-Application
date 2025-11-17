@@ -13,22 +13,22 @@ const Login = () => {
     password: "",
   });
 
-  // State to store validation errors
+  // State to store validation errors for individual fields
   const [errors, setErrors] = useState({});
 
-  // State to store backend server errors
+  // State to store backend/server error messages
   const [serverError, setServerError] = useState("");
 
   // Show/Hide Password Toggle
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
-  // Handle input change
+  // Handle input change for both email and password fields
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validate inputs
+  // Validate inputs before sending request
   const validate = () => {
     const newErrors = {};
 
@@ -41,6 +41,7 @@ const Login = () => {
       newErrors.email = "Invalid email format";
     }
 
+    // Password required check
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     }
@@ -48,7 +49,7 @@ const Login = () => {
     return newErrors;
   };
 
-  // JWT decoding helper
+  // JWT decoding helper to extract payload info (role, username)
   const parseJwt = (token) => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
@@ -62,6 +63,7 @@ const Login = () => {
     e.preventDefault();
     setServerError("");
 
+    // Run client-side validation
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -76,6 +78,7 @@ const Login = () => {
         const { token } = response.data;
         const decoded = parseJwt(token);
 
+        // Handle different possible claim keys for role
         const userRole =
           decoded?.role ||
           decoded?.UserRole ||
@@ -83,16 +86,20 @@ const Login = () => {
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
           ];
 
+        // Handle different possible claim keys for username
         const userName = decoded?.username || decoded?.UserName || decoded?.sub;
 
+        // Persist auth data in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("role", userRole);
         localStorage.setItem("username", userName);
 
+        // Redirect based on role
         if (userRole === "BookRecommender") navigate("/bookrecommender/home");
         else if (userRole === "BookReader") navigate("/bookreader/home");
         else setServerError("Invalid role detected. Please contact support.");
       } else {
+        // Fallback for unexpected response shape
         setServerError("Invalid email or password");
       }
     } catch (err) {
@@ -104,7 +111,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        {/* Left Side */}
+        {/* Left Side - App branding and short description */}
         <div className="login-left">
           <h2 className="login-subtitle">BookFinder</h2>
           <p className="login-description">
@@ -112,7 +119,7 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Right Side */}
+        {/* Right Side - Actual login form */}
         <div className="login-right">
           <h1 className="login-title">Login</h1>
 
@@ -121,7 +128,6 @@ const Login = () => {
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} noValidate>
-            
             {/* Email */}
             <div className="form-group">
               <label>Email</label>
@@ -151,14 +157,14 @@ const Login = () => {
                   className={errors.password ? "input-error" : ""}
                 />
 
-                {/* Eye Button */}
+                {/* Eye Button to toggle password visibility */}
                 <button
                   type="button"
                   className={`eye-btn ${showPassword ? "active" : ""}`}
                   onClick={togglePassword}
                 >
                   {showPassword ? (
-                    /* Eye open */
+                    /* Eye open icon */
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -174,7 +180,7 @@ const Login = () => {
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   ) : (
-                    /* Eye closed */
+                    /* Eye closed icon */
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -199,7 +205,7 @@ const Login = () => {
               )}
             </div>
 
-            {/* Forgot Password */}
+            {/* Forgot Password link navigates to forgot-password flow */}
             <p className="forgot-link">
               <Link to="/forgot-password">Forgot Password?</Link>
             </p>
@@ -210,6 +216,7 @@ const Login = () => {
             </button>
           </form>
 
+          {/* Redirect to signup for new users */}
           <p className="login-footer">
             Don't have an account?{" "}
             <Link to="/signup" className="signup-link">
