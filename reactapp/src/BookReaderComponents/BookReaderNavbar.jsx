@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaHome, FaBook, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import './BookReaderNavbar.css';
+
+
+
 
 const BookReaderNavbar = () => {
   const navigate = useNavigate();
-
-  // State to toggle logout confirmation modal
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // Fetch username & role from localStorage (set during login)
   const username = localStorage.getItem("username");
   const role = localStorage.getItem("role");
 
-  // Handles logout: clears user data & redirects to login page
   const handleLogoutConfirm = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -21,49 +21,49 @@ const BookReaderNavbar = () => {
     navigate("/", { replace: true });
   };
 
+
+
   return (
     <div>
-      {/* Top Navigation Bar */}
-      <nav className="bookfinder-navbar">
-        <div className="navbar-left">
-          <h2>BookFinder</h2>
+      <nav className="reader-navbar">
+        {/* LEFT */}
+        <div className="nav-left">
+          <h2 className="brand-title">BookFinder</h2>
         </div>
 
-        <div className="navbar-right">
-          {/* Display logged-in user's name and role */}
-          <span className="user-info">
-            {username} / {role}
+        {/* RIGHT */}
+        <div className="nav-right">
+          <span className="user-chip">
+            <FaUser size={14} /> {username} / {role}
           </span>
 
-          {/* Navigation Links */}
-          <Link to="/bookreader/home" className="nav-link">Home</Link>
-          <Link to="/bookreader/view" className="nav-link">Books</Link>
+          <Link to="/bookreader/home" className="nav-item">
+            <FaHome className="nav-icon" /> Home
+          </Link>
 
-          {/* Logout Button */}
+          <Link to="/bookreader/view" className="nav-item">
+            <FaBook className="nav-icon" /> Books
+          </Link>
+
           <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
-            Logout
+            <FaSignOutAlt className="nav-icon" /> Logout
           </button>
         </div>
       </nav>
 
-      {/* Logout Confirmation Modal */}
+
+
+
+      {/* LOGOUT MODAL */}
       {showLogoutModal && (
         <div className="logout-modal">
-          <div className="logout-modal-content">
+          <div className="logout-box">
             <h3>Are you sure you want to logout?</h3>
-
-            {/* Modal Buttons */}
-            <div className="logout-btn-group">
-              {/* Confirm Logout */}
-              <button className="confirm-btn" onClick={handleLogoutConfirm}>
+            <div className="logout-actions">
+              <button className="confirm" onClick={handleLogoutConfirm}>
                 Yes, Logout
               </button>
-
-              {/* Cancel Logout */}
-              <button
-                className="cancel-btn"
-                onClick={() => setShowLogoutModal(false)}
-              >
+              <button className="cancel" onClick={() => setShowLogoutModal(false)}>
                 Cancel
               </button>
             </div>
@@ -74,4 +74,11 @@ const BookReaderNavbar = () => {
   );
 };
 
+
+
+
+
+
+
 export default BookReaderNavbar;
+
