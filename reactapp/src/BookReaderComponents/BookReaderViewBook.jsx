@@ -4,49 +4,57 @@ import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
 import BookReaderNavbar from './BookReaderNavbar';
 
-
-
-
 const BookReaderViewBook = () => {
+  // State to store all books fetched from API
   const [books, setBooks] = useState([]);
+  
+  // State for search input text
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // State for search type (title, author, genre, or all)
   const [searchType, setSearchType] = useState("all");
+  
+  // State for sorting type (title, author, date ascending/descending)
   const [sortType, setSortType] = useState("");
+  
+  // State for selected book (used for modal preview)
   const [selectedBook, setSelectedBook] = useState(null);
 
+  // Fetch books from API
   const fetchBooks = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token'); // Get token from localStorage
       const response = await axios.get(`${API_BASE_URL}api/books`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         }
       });
-      setBooks(response.data);
+      setBooks(response.data); // Store fetched books in state
     } catch (error) {
       console.error('Error fetching books:', error);
     }
   };
 
+  // Fetch books on component mount
   useEffect(() => {
     fetchBooks();
   }, []);
 
+  // Initialize finalBooks with all books
   let finalBooks = books;
 
-  // SEARCH FILTER
-
-
-
+  // ================= SEARCH FILTER =================
   if (searchTerm.trim() !== "") {
     const term = searchTerm.toLowerCase();
 
+    // Filter books based on search type
     finalBooks = books.filter(book => {
       if (searchType === "title") return book.title.toLowerCase().includes(term);
       if (searchType === "author") return book.author.toLowerCase().includes(term);
       if (searchType === "genre") return book.genre.toLowerCase().includes(term);
 
+      // If searchType is "all", check all fields
       return (
         book.title.toLowerCase().includes(term) ||
         book.author.toLowerCase().includes(term) ||
@@ -54,11 +62,9 @@ const BookReaderViewBook = () => {
       );
     });
   }
-  // SORT (only if search is empty)
-
-
-
+  // ================= SORTING =================
   else if (sortType !== "") {
+    // Sort books based on selected sort type
     finalBooks = [...books].sort((a, b) => {
       switch (sortType) {
         case "title-asc": return a.title.localeCompare(b.title);
@@ -72,17 +78,12 @@ const BookReaderViewBook = () => {
     });
   }
 
-
-
   return (
     <div className="reader-view-wrapper">
-
+      {/* Navbar */}
       <BookReaderNavbar />
 
-      {/* Background particles */}
-
-
-
+      {/* Background particles for visual effect */}
       {Array.from({ length: 25 }).map((_, i) => (
         <div
           key={i}
@@ -96,22 +97,11 @@ const BookReaderViewBook = () => {
       ))}
 
       <div className="view-books-container">
-
         <h2 className="heading">Explore Books</h2>
 
-
-
-
-
-
-        {/* ================= SEARCH + FILTER + SORT (Clean Row) ================= */}
-
-
-
-
-
+        {/* ================= SEARCH + FILTER + SORT ================= */}
         <div className="search-sort-row">
-
+          {/* Search input */}
           <input
             type="text"
             placeholder="Search..."
@@ -120,6 +110,7 @@ const BookReaderViewBook = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
+          {/* Dropdown for search type */}
           <select
             className="search-dropdown"
             value={searchType}
@@ -131,6 +122,7 @@ const BookReaderViewBook = () => {
             <option value="genre">Genre</option>
           </select>
 
+          {/* Dropdown for sort type */}
           <select
             className="search-dropdown"
             value={sortType}
@@ -146,24 +138,16 @@ const BookReaderViewBook = () => {
           </select>
         </div>
 
-
-
-
-
         {/* ================= BOOK GRID ================= */}
-
-
-
-
-
         <div className="books-grid">
           {finalBooks.length > 0 ? (
             finalBooks.map((book) => (
               <div
                 key={book.bookId}
                 className="book-card"
-                onClick={() => setSelectedBook(book)}
+                onClick={() => setSelectedBook(book)} // Open modal on click
               >
+                {/* Book cover */}
                 <img
                   src={
                     book.coverImage
@@ -174,9 +158,11 @@ const BookReaderViewBook = () => {
                   className="book-cover"
                 />
 
+                {/* Book details */}
                 <div className="book-details">
                   <h3 className="book-title">{book.title}</h3>
 
+                  {/* Tags for genre and date */}
                   <div className="tags">
                     <span className="tag tag-green">{book.genre}</span>
                     <span className="tag tag-blue">{book.publishedDate}</span>
@@ -191,22 +177,16 @@ const BookReaderViewBook = () => {
           )}
         </div>
 
-
-
-
-
-        {/* ================= MODAL ================= */}
-
-
-
-
+        {/* ================= MODAL FOR BOOK PREVIEW ================= */}
         {selectedBook && (
           <div className="modal-overlay" onClick={() => setSelectedBook(null)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              {/* Close button */}
               <span className="close-btn" onClick={() => setSelectedBook(null)}>
                 ×
               </span>
 
+              {/* Modal book cover */}
               <img
                 src={
                   selectedBook.coverImage
@@ -217,6 +197,7 @@ const BookReaderViewBook = () => {
                 className="modal-cover"
               />
 
+              {/* Modal book details */}
               <h2 className="modal-title">{selectedBook.title}</h2>
 
               <div className="modal-tags">
@@ -228,14 +209,9 @@ const BookReaderViewBook = () => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
 };
-
-
-
-
 
 export default BookReaderViewBook;
