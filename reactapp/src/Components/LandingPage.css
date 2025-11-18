@@ -70,61 +70,104 @@
   
 
 
-  /* ============================================================
-     NAVBAR
-  ============================================================ */
+ /* ============================================================
+   NAVBAR — FIXED ICON ALIGNMENT
+============================================================ */
+
+.landing-navbar {
+  width: 100%;
+  padding: 16px 40px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(10, 15, 12, 0.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 4px 25px rgba(0,0,0,0.55);
+}
+
+/* Logo (Book Icon + Text) */
+.landing-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 1.9rem;
+  font-weight: 900;
+
+  background: linear-gradient(90deg, #4da3ff, #76ffc4);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  margin: 0; /* remove extra margin */
+  vertical-align: middle;
+}
 
 
+/* ============================================================
+   NAV LINKS (icon + text)
+============================================================ */
 
-  .landing-navbar {
-    width: 100%;
-    padding: 18px 40px;
-    position: fixed;
-    top: 0;
-    z-index: 10;
-  
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  
-    background: rgba(10, 15, 12, 0.75);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 4px 25px rgba(0,0,0,0.55);
-  }
-  
-  .landing-logo {
-    font-size: 1.9rem;
-    font-weight: 900;
-    background: linear-gradient(90deg, #4da3ff, #76ffc4);
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-  
-  .landing-nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-  }
-  
-  .landing-nav-links li a {
-    text-decoration: none;
-    font-size: 1rem;
-    color: #dcdcdc;
-    transition: 0.3s;
-  }
-  
-  .landing-nav-links li a:hover {
-    color: #76ffc4;
-    text-shadow: 0 0 10px rgba(118,255,196,0.6);
-  }
-  
-  .lang-label {
-    border: 1px solid rgba(255,255,255,0.25);
-    padding: 6px 12px;
-    border-radius: 6px;
-    color: #dcdcdc;
-  }
+.landing-nav-links {
+  display: flex;
+  list-style: none;
+  gap: 28px; /* slightly reduced gap for cleaner layout */
+  align-items: center;
+}
+
+.landing-nav-links li {
+  display: flex;
+  align-items: center;
+}
+
+.landing-nav-links li a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  text-decoration: none;
+  font-size: 1rem;
+  color: #dcdcdc;
+
+  transition: 0.3s ease;
+}
+
+.landing-nav-links li a:hover {
+  color: #76ffc4;
+  text-shadow: 0 0 10px rgba(118,255,196,0.6);
+}
+
+/* Language Selector */
+.lang-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #dcdcdc;
+
+  font-size: 0.95rem;
+}
+
+/* Icons inside nav */
+.landing-nav-links li svg,
+.lang-label svg {
+  font-size: 1rem;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+}
+
   
 
 
@@ -314,4 +357,227 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   
+  .logo-icon {
+    margin-right: 8px;
+    font-size: 1.4rem;
+    vertical-align: middle;
+  }
   
+  .landing-nav-links li svg {
+    margin-right: 6px;
+  }
+  
+  .section-icon {
+    margin-right: 10px;
+    color: #e3e8dc;
+  }
+  
+  .cta-icon {
+    margin-left: 8px;
+    font-size: 1.1rem;
+    vertical-align: middle;
+  }
+
+  /* ============================================
+   ABOUT — Interactive Features
+============================================ */
+
+.about-text {
+  max-width: 750px;
+  margin: 16px auto 40px;
+  font-size: 1.2rem;
+  color: #cfe7dd;
+  line-height: 1.8;
+}
+
+.about-features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.feature-card {
+  width: 260px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 24px;
+  border-radius: 18px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.45);
+
+  transition: 0.35s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 40px rgba(118,255,196,0.35);
+  border-color: rgba(118,255,196,0.45);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: #76ffc4;
+  margin-bottom: 12px;
+}
+
+.feature-card h3 {
+  color: #e4fff4;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  color: #cddcd4;
+  font-size: 0.95rem;
+}
+
+
+
+/* ============================================
+   CONTACT — Interactive Cards
+============================================ */
+
+.contact-subtitle {
+  font-size: 1.15rem;
+  color: #bcd5ca;
+  margin-bottom: 20px;
+}
+
+.contact-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.contact-card {
+  width: 260px;
+  padding: 26px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+
+  border-radius: 18px;
+  text-align: center;
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.45);
+
+  transition: 0.35s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-10px);
+  border-color: #76ffc4;
+  box-shadow: 0 10px 40px rgba(118,255,196,0.4);
+}
+
+.contact-icon {
+  font-size: 2.3rem;
+  color: #76ffc4;
+  margin-bottom: 10px;
+}
+
+.contact-card h3 {
+  color: #e2fff2;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.contact-card span {
+  display: block;
+  margin-top: 6px;
+
+  color: #eafaf5;
+  font-weight: 600;
+
+  /* FIX: prevent overflow */
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
+
+  /* optional — keeps it visually tidy */
+  max-width: 220px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* ================================
+   WHY BOOKFINDER SECTION
+================================ */
+.landing-why {
+  padding: 80px 40px;
+  text-align: center;
+  background: rgba(10, 18, 14, 0.85);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.landing-why .section-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #76ffc4;
+}
+
+.landing-why .section-title span {
+  color: #4da3ff;
+}
+
+.why-grid {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.why-card {
+  width: 300px;
+  background: rgba(255,255,255,0.12);
+  padding: 26px;
+  border-radius: 14px;
+  color: #e3e8dc;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+  transition: 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+}
+
+
+/* ================================
+   FOOTER
+================================ */
+.landing-footer {
+  padding: 25px;
+  text-align: center;
+  background: rgba(5, 10, 8, 0.95);
+  color: #9faeaa;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  margin-top: 50px;
+}
+
+.footer-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: #76ffc4;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: #4da3ff;
+}
+
