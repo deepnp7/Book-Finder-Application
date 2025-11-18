@@ -1,6 +1,7 @@
 #Backend
 
 dotnetapp/Migrations/
+dotnetapp/appsettings.json
 nunit/
 
 #Frontend
