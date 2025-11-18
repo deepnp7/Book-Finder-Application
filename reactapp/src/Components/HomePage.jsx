@@ -2,11 +2,12 @@ import React from "react";
 import "./HomePage.css";
 
 function HomePage() {
+  // Particle list used to render decorative animated circles
   const particles = Array.from({ length: 25 });
 
   return (
     <div className="home-container">
-      {/* Floating particles */}
+      {/* Floating particles for animated background */}
       {particles.map((_, i) => (
         <div
           key={i}
@@ -19,7 +20,7 @@ function HomePage() {
         />
       ))}
 
-      {/* Glass Card */}
+      {/* Glass Card with app title and tagline */}
       <div className="home-card">
         <h1 className="home-heading">BookFinder</h1>
         <p className="home-tagline">
@@ -30,7 +31,7 @@ function HomePage() {
         <div className="home-divider"></div>
       </div>
 
-      {/* Footer */}
+      {/* Simple footer with contact details */}
       <footer className="home-footer">
         <p><strong>Email:</strong>bookfinderstatuscode6@gmail.com</p>
         <p><strong>Phone:</strong> +91 98765 43210</p>

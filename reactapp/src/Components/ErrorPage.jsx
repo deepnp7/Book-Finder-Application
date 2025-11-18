@@ -3,22 +3,24 @@ import { useNavigate } from "react-router-dom";
 import "./ErrorPage.css";
 
 const ErrorPage = () => {
+  // React Router hook for programmatic navigation
   const navigate = useNavigate();
 
+  // Decide where to send the user based on stored role
   const handleGoHome = () => {
     const role = localStorage.getItem("role");
 
     if (role === "BookRecommender") navigate("/bookrecommender/home");
     else if (role === "BookReader") navigate("/bookreader/home");
-    else navigate("/");
+    else navigate("/"); // Fallback to landing/login page
   };
 
+  // Create an array of 25 items to render animated background particles
   const particles = Array.from({ length: 25 });
 
   return (
     <div className="error-container">
-
-      {/* Floating particles */}
+      {/* Animated floating particles in the background */}
       {particles.map((_, i) => (
         <div
           key={i}
@@ -32,11 +34,12 @@ const ErrorPage = () => {
         />
       ))}
 
+      {/* Main error card content */}
       <div className="error-card">
-
-        {/* ANIMATED 404 */}
+        {/* Animated 404 heading */}
         <h1 className="error-404">404</h1>
 
+        {/* Error illustration */}
         <img
           src="/alert.jpeg"
           alt="Error Icon"
@@ -49,6 +52,7 @@ const ErrorPage = () => {
           The page you're looking for doesn't exist or something went wrong.
         </p>
 
+        {/* Button to navigate user back to appropriate home page */}
         <button className="error-btn" onClick={handleGoHome}>
           ⬅ Go Back Home
         </button>

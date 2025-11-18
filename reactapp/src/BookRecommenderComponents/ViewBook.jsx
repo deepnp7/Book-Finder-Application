@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../apiConfig";
 import BookRecommenderNavbar from "./BookRecommenderNavbar";
 
+// Component to view, edit, and delete books
 const ViewBook = () => {
+  // State to store all books fetched from API
   const [books, setBooks] = useState([]);
+  // State to track which book is being edited
   const [editingBook, setEditingBook] = useState(null);
+  // State for edit form data
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -15,17 +19,21 @@ const ViewBook = () => {
     genre: "",
     coverImage: "",
   });
+  // State for validation errors
   const [errors, setErrors] = useState({});
+  // State to show success modal after update
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Delete popup:
+  // State for delete confirmation modal
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
 
+  // Background particles for UI effect
   const particles = Array.from({ length: 25 });
 
   const navigate = useNavigate();
 
+  // Fetch books from API when component mounts
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
@@ -36,7 +44,7 @@ const ViewBook = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  //  OPEN EDIT MODAL
+  // Open edit modal and populate form with selected book data
   const handleEdit = (book) => {
     setEditingBook(book);
     setFormData({
@@ -48,13 +56,13 @@ const ViewBook = () => {
     });
   };
 
-  //  OPEN DELETE MODAL
+  // Open delete confirmation modal
   const handleDeleteRequest = (book) => {
     setBookToDelete(book);
     setShowDeleteConfirm(true);
   };
 
-  //  CONFIRM DELETE
+  // Confirm delete and remove book from API and state
   const confirmDelete = () => {
     const token = localStorage.getItem("token");
     axios
@@ -62,6 +70,7 @@ const ViewBook = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
+        // Remove deleted book from state
         setBooks(books.filter((b) => b.bookId !== bookToDelete.bookId));
         setShowDeleteConfirm(false);
         setBookToDelete(null);
@@ -69,10 +78,12 @@ const ViewBook = () => {
       .catch((err) => console.error(err));
   };
 
+  // Handle input changes in edit form
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Validate edit form fields
   const validate = () => {
     let temp = {};
     if (!formData.title.trim()) temp.title = "Title required";
@@ -84,13 +95,14 @@ const ViewBook = () => {
     return Object.keys(temp).length === 0;
   };
 
+  // Handle book update (with or without new image)
   const handleUpdate = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     const token = localStorage.getItem("token");
 
-    // If new image uploaded
+    // If new image uploaded, convert to Base64
     if (formData.coverImage instanceof File) {
       const reader = new FileReader();
       reader.onloadend = async () => {
@@ -104,6 +116,7 @@ const ViewBook = () => {
             { headers: { Authorization: `Bearer ${token}` } }
           );
 
+          // Update book in state
           setBooks(
             books.map((b) =>
               b.bookId === editingBook.bookId ? { ...b, ...updatedBook } : b
@@ -117,7 +130,7 @@ const ViewBook = () => {
       };
       reader.readAsDataURL(formData.coverImage);
     } else {
-      // No image change
+      // No image change, update directly
       axios
         .put(`${API_BASE_URL}api/books/${editingBook.bookId}`, formData, {
           headers: { Authorization: `Bearer ${token}` },
@@ -137,8 +150,10 @@ const ViewBook = () => {
 
   return (
     <div className="viewbook-container">
+      {/* Navbar */}
       <BookRecommenderNavbar />
 
+      {/* Background particles */}
       {particles.map((_, i) => (
         <div
           key={i}
@@ -153,18 +168,21 @@ const ViewBook = () => {
 
       <h2 className="page-title">My Book Shelf</h2>
 
+      {/* Book cards grid */}
       <div className="book-card-grid">
         {books.length === 0 ? (
           <div className="no-books">No books found.</div>
         ) : (
           books.map((book) => (
             <div className="book-card" key={book.bookId}>
+              {/* Book cover */}
               <img
                 src={`data:image/jpeg;base64,${book.coverImage}`}
                 className="book-cover"
                 alt="Book Cover"
               />
 
+              {/* Book details */}
               <div className="book-info">
                 <h3>{book.title}</h3>
                 <p className="author">By {book.author}</p>
@@ -175,8 +193,8 @@ const ViewBook = () => {
                 </div>
               </div>
 
+              {/* Action buttons */}
               <div className="actions">
-                {/* FIXED: this now opens edit modal correctly */}
                 <button className="edit-btn" onClick={() => handleEdit(book)}>
                   Edit
                 </button>
@@ -222,6 +240,7 @@ const ViewBook = () => {
             <h3>Edit Book</h3>
 
             <form onSubmit={handleUpdate}>
+              {/* Title */}
               <label>Title</label>
               <input
                 type="text"
@@ -231,6 +250,7 @@ const ViewBook = () => {
               />
               {errors.title && <p className="err">{errors.title}</p>}
 
+              {/* Author */}
               <label>Author</label>
               <input
                 type="text"
@@ -240,6 +260,7 @@ const ViewBook = () => {
               />
               {errors.author && <p className="err">{errors.author}</p>}
 
+              {/* Published Date */}
               <label>Published Date</label>
               <input
                 type="date"
@@ -251,6 +272,7 @@ const ViewBook = () => {
                 <p className="err">{errors.publishedDate}</p>
               )}
 
+              {/* Genre */}
               <label>Genre</label>
               <input
                 type="text"
@@ -260,6 +282,7 @@ const ViewBook = () => {
               />
               {errors.genre && <p className="err">{errors.genre}</p>}
 
+              {/* File upload */}
               <div className="file-input-wrapper">
                 <label className="file-label">Cover Image</label>
 
@@ -280,7 +303,9 @@ const ViewBook = () => {
                   {formData.coverImage?.name || "No file chosen"}
                 </span>
               </div>
-             <div className="edit-buttons">
+
+              {/* Buttons */}
+              <div className="edit-buttons">
                 <button className="save">Save</button>
                 <button
                   type="button"
