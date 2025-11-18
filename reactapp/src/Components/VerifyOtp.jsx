@@ -7,21 +7,27 @@ import "./VerifyOtp.css";
 const VerifyOtp = () => {
   // State to store the OTP entered by the user
   const [otp, setOtp] = useState("");
-  const [showModal, setShowModal] = useState(false); //  Modal state
+
+  // Controls visibility of success modal
+  const [showModal, setShowModal] = useState(false);
+
+  // Read email from query params (set on previous page)
   const [params] = useSearchParams();
   const email = params.get("email");
 
   // For navigation after successful verification
   const navigate = useNavigate();
 
+  // Generate particles for animated background
   const particles = Array.from({ length: 25 });
 
+  // Verify OTP against backend
   const handleVerify = async () => {
     try {
       // API call to verify OTP with email and otp
       await axios.post(`${API_BASE_URL}api/verify-otp`, { email, otp });
 
-      //  Open success modal
+      // Open success modal on successful verification
       setShowModal(true);
     } catch (err) {
       // If backend sends specific message → show it, else show fallback message
@@ -30,6 +36,7 @@ const VerifyOtp = () => {
     }
   };
 
+  // Close modal and proceed to reset-password screen with query params
   const closeModal = () => {
     setShowModal(false);
     navigate(`/reset-password?email=${email}&otp=${otp}`); // Move to next page
@@ -37,7 +44,7 @@ const VerifyOtp = () => {
 
   return (
     <div className="otp-container">
-      {/* Floating Particles */}
+      {/* Floating Particles for background effect */}
       {particles.map((_, i) => (
         <div
           key={i}
@@ -51,6 +58,7 @@ const VerifyOtp = () => {
         />
       ))}
 
+      {/* OTP input card */}
       <div className="otp-card">
         <h2>Verify OTP</h2>
         <p>OTP sent to: <strong>{email}</strong></p>
@@ -65,7 +73,7 @@ const VerifyOtp = () => {
         <button onClick={handleVerify}>Verify</button>
       </div>
 
-      {/* SUCCESS MODAL */}
+      {/* SUCCESS MODAL shown after OTP verification */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">

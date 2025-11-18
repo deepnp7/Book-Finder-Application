@@ -7,8 +7,7 @@ import "./Signup.css";
 const Signup = () => {
   const navigate = useNavigate();
 
-  // Form State
-  // Holds all input values of the signup form
+  // Form State - holds all input values of the signup form
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -18,17 +17,25 @@ const Signup = () => {
     userRole: "",
   });
 
-  // Stores validation errors
+  // Stores validation errors for each input
   const [errors, setErrors] = useState({});
+
+  // Indicates password strength label ("Weak", "Medium", "Strong")
   const [passwordStrength, setPasswordStrength] = useState("");
+
+  // UI state to show/hide password fields
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
+
+  // Controls visibility of registration success modal
   const [showModal, setShowModal] = useState(false);
 
+  // Animated background particles
   const particles = Array.from({ length: 25 });
 
   // -------------------------
   // REMOVE ERROR
+  // Removes validation error for a single field
   // -------------------------
   const removeError = (field) => {
     setErrors((prev) => {
@@ -40,6 +47,7 @@ const Signup = () => {
 
   // -------------------------
   // REAL-TIME VALIDATION
+  // Live email validation - allows only Gmail or Outlook domains
   // -------------------------
   const validateEmailLive = (email) => {
     // Gmail OR Outlook only
@@ -56,7 +64,9 @@ const Signup = () => {
     }
   };
 
+  // Live validation for mobile number (digits + length)
   const validateMobileLive = (mobile) => {
+    // Ignore non-digit input
     if (!/^[0-9]*$/.test(mobile)) return;
 
     if (mobile.length !== 10) {
@@ -68,6 +78,7 @@ const Signup = () => {
   };
 
   // FIXED REAL-TIME PASSWORD MATCHING
+  // Keeps confirm password error in sync as user types
   const validatePasswordMatchLive = (pwd, cpwd) => {
     if (cpwd.length === 0) return;
 
@@ -83,15 +94,17 @@ const Signup = () => {
 
   // -------------------------
   // HANDLE CHANGE
+  // Handles all form input changes and triggers live validations
   // -------------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Mobile validation: digits only
+    // Mobile validation: digits only (ignore other characters)
     if (name === "mobileNumber" && !/^[0-9]*$/.test(value)) return;
 
     setFormData({ ...formData, [name]: value });
 
+    // Trigger live validators
     if (name === "email") validateEmailLive(value);
 
     if (name === "mobileNumber") validateMobileLive(value);
@@ -108,6 +121,7 @@ const Signup = () => {
 
   // -------------------------
   // PASSWORD STRENGTH
+  // Simple strength checker based on length and character variety
   // -------------------------
   const analyzeStrength = (pwd) => {
     if (pwd.length < 6) setPasswordStrength("Weak");
@@ -118,6 +132,7 @@ const Signup = () => {
 
   // -------------------------
   // FINAL VALIDATION (Submit)
+  // Validates all fields before making API request
   // -------------------------
   const validate = () => {
     let temp = {};
@@ -151,6 +166,7 @@ const Signup = () => {
 
   // -------------------------
   // SUBMIT
+  // Sends signup data to backend if validation passes
   // -------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -160,14 +176,17 @@ const Signup = () => {
 
     try {
       await axios.post(`${API_BASE_URL}api/register`, formData);
+      // Show success modal on successful registration
       setShowModal(true);
     } catch {
+      // Minimal error handling; could be improved with backend message
       alert("Signup failed. Try again.");
     }
   };
 
   // -------------------------
   // CLOSE MODAL
+  // Hide modal and take user to login page
   // -------------------------
   const closeModal = () => {
     setShowModal(false);
@@ -176,7 +195,7 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-      {/* Floating particles */}
+      {/* Floating particles for aesthetic background */}
       {particles.map((_, i) => (
         <div
           key={i}
@@ -192,8 +211,8 @@ const Signup = () => {
       <div className="signup-card">
         <h2 className="signup-title">Create Your Account</h2>
 
+        {/* Signup Form */}
         <form onSubmit={handleSubmit} className="signup-form">
-
           {/* Username */}
           <div className="floating-group">
             <input
@@ -251,6 +270,7 @@ const Signup = () => {
             />
             <label>Password</label>
 
+            {/* Toggle password visibility */}
             <button
               type="button"
               className={`eye-btn ${showPassword ? "active" : ""}`}
@@ -272,7 +292,7 @@ const Signup = () => {
             {errors.password && <p className="error">{errors.password}</p>}
           </div>
 
-          {/* Strength Meter */}
+          {/* Strength Meter - password strength feedback */}
           {formData.password && (
             <p className={`strength ${passwordStrength.toLowerCase()}`}>
               Strength: {passwordStrength}
@@ -280,42 +300,41 @@ const Signup = () => {
           )}
 
           {/* Confirm Password */}
-<div className="floating-group password-wrapper">
-  <input
-    type={showCPassword ? "text" : "password"}
-    name="confirmPassword"
-    required
-    placeholder=" "
-    value={formData.confirmPassword}
-    onChange={handleChange}
-  />
-  <label>Confirm Password</label>
+          <div className="floating-group password-wrapper">
+            <input
+              type={showCPassword ? "text" : "password"}
+              name="confirmPassword"
+              required
+              placeholder=" "
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+            <label>Confirm Password</label>
 
-  <button
-    type="button"
-    className={`eye-btn ${showCPassword ? "active" : ""}`}
-    onClick={() => setShowCPassword((s) => !s)}
-  >
-    {showCPassword ? (
-      <svg viewBox="0 0 24 24">
-        <path d="M1 12s4-8 11-8 11 8-11 8-4 8 11 8 11-8-11-8z" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-    ) : (
-      <svg viewBox="0 0 24 24">
-        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.33 21.33 0 0 1 5.06-6.04" />
-        <path d="M1 1l22 22" />
-      </svg>
-    )}
-  </button>
+            {/* Toggle confirm password visibility */}
+            <button
+              type="button"
+              className={`eye-btn ${showCPassword ? "active" : ""}`}
+              onClick={() => setShowCPassword((s) => !s)}
+            >
+              {showCPassword ? (
+                <svg viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8-11 8-4 8 11 8 11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24">
+                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.33 21.33 0 0 1 5.06-6.04" />
+                  <path d="M1 1l22 22" />
+                </svg>
+              )}
+            </button>
+          </div>
 
-</div>
-
-{/* ERROR BELOW INPUT */}
-{errors.confirmPassword && (
-  <p className="error below">{errors.confirmPassword}</p>
-)}
-
+          {/* ERROR BELOW INPUT for confirm password */}
+          {errors.confirmPassword && (
+            <p className="error below">{errors.confirmPassword}</p>
+          )}
 
           {/* Role Dropdown */}
           <div className="dropdown-group">
@@ -343,6 +362,7 @@ const Signup = () => {
             Create Account
           </button>
 
+          {/* Link back to login page for existing users */}
           <p className="login-link">
             Already have an account?{" "}
             <span onClick={() => navigate("/")}>Login</span>
@@ -350,7 +370,7 @@ const Signup = () => {
         </form>
       </div>
 
-      {/* SUCCESS MODAL */}
+      {/* SUCCESS MODAL - shown after successful registration */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
