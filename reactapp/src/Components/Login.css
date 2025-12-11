@@ -1,109 +1,65 @@
 /* ============================================================
-    GLOBAL RESET + FONT
-============================================================ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  overflow: hidden;
-  background: #000;
-}
-
-/* ============================================================
-    BACKGROUND (3D PARALLAX + PARTICLES + ANIMATED FOG)
+    LOGIN - LIQUID GLASS THEME
 ============================================================ */
 .login-container {
   position: relative;
   height: 100vh;
   width: 100vw;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* Background Image */
-  background-image: url('/public/Background.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  /* 3D Parallax Effect */
-  perspective: 1000px;
-  transform-style: preserve-3d;
+  background: transparent;
+  /* Show global gradient */
+  overflow: hidden;
 }
 
-/* Dark overlay */
-.login-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px);
-  z-index: 0;
-}
-
-/* Floating fog layer */
-.login-container::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("/public/Back2.jpeg");
-  opacity: 0.18;
-  animation: fogMove 20s linear infinite;
-  z-index: 0;
-}
-
-@keyframes fogMove {
-  from { transform: translateX(-400px); }
-  to { transform: translateX(400px); }
-}
-
-/* Floating light particles */
+/* Optional: Add floating shapes or particles specific to login */
 .particle {
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   animation: floatUp 10s infinite ease-in-out;
+  z-index: 0;
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(0) scale(0.7); opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-800px) scale(1.3); opacity: 0; }
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-800px) scale(1.2);
+    opacity: 0;
+  }
 }
 
-
 /* ============================================================
-    LOGIN CARD (Premium Glassmorphism + Glow + Entrance Motion)
+    LOGIN CARD - GLASS PANEL
 ============================================================ */
 .login-card {
   position: relative;
   z-index: 5;
-
   display: flex;
   width: 900px;
-  height: 520px;
-  border-radius: 20px;
+  height: 550px;
+  border-radius: 30px;
   overflow: hidden;
 
-  /* Glass effect */
-  background: rgba(255, 255, 255, 0.12);
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(16px);
 
-  /* Ambient glow */
-  box-shadow: 0 0 45px rgba(255, 255, 255, 0.12);
-
-  /* Smooth entrance animation */
   animation: cardReveal 1s ease forwards;
-  transform: translateY(40px);
   opacity: 0;
+  transform: translateY(30px);
 }
 
 @keyframes cardReveal {
@@ -113,279 +69,209 @@ body {
   }
 }
 
-/* Bright side glow */
-.login-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0.15),
-    transparent 60%
-  );
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
-
-/* ============================================================
-    LEFT SIDE — Animated Gradient + Shine Sweep
-============================================================ */
-.login-card > div:first-child {
+/* LEFT SIDE - DECORATIVE */
+.login-left {
   flex: 1;
-  padding: 45px;
-
-  /* Reactive gradient */
-  background: linear-gradient(145deg, #0f1e14, #263a2c, #40594c);
-  background-size: 300% 300%;
-  animation: gradientFlow 9s ease infinite;
-
-  color: #e3e8dc;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  /* Subtle difference */
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@keyframes gradientFlow {
-  0% { background-position: 0% 30%; }
-  50% { background-position: 100% 70%; }
-  100% { background-position: 0% 30%; }
-}
-
-/* Shine sweep */
-.login-card > div:first-child::after {
+.login-left::before {
   content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.35),
-    transparent
-  );
-
-  transform: rotate(25deg);
-  animation: sweep 6s infinite linear;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+  animation: rotateGlow 15s linear infinite;
+  z-index: -1;
 }
 
-@keyframes sweep {
-  0% { transform: translateX(-150%) rotate(25deg); }
-  100% { transform: translateX(150%) rotate(25deg); }
+@keyframes rotateGlow {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .login-subtitle {
-  font-size: 2.6rem;
-  font-weight: 800;
-  margin-bottom: 18px;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 20px;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .login-description {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
-  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-
-/* ============================================================
-    RIGHT SIDE — Clean & Minimal
-============================================================ */
-.login-card > div:last-child {
+/* RIGHT SIDE - FORM */
+.login-right {
   flex: 1;
-  padding: 45px;
-  background: rgba(255, 255, 255, 0.95);
-
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  /* Slightly darker for input contrast */
 }
 
 .login-title {
-  font-size: 2.2rem;
-  font-weight: 900;
-  margin-bottom: 25px;
-  color: #0f1e14;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
-
-/* ============================================================
-    FORM + NEON INPUTS
-============================================================ */
-.form-group {
+.server-error {
+  background: rgba(255, 77, 77, 0.2);
+  border: 1px solid rgba(255, 77, 77, 0.4);
+  color: #ffcccc;
+  padding: 10px;
+  border-radius: 8px;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+/* FORM INPUTS - GLASS STYLE */
+.form-group {
+  margin-bottom: 25px;
 }
 
 .form-group label {
-  margin-bottom: 6px;
-  font-weight: 600;
   display: block;
-  color: #1a3c2e;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-
-  background: #f4f4f4;
-  border: 2px solid #c6c6c6;
-
-  transition: 0.3s;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  /* Glass Input */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
   font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-/* Neon focus */
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .form-group input:focus {
-  border-color: #1a3c2e;
-  box-shadow: 0 0 10px rgba(26, 60, 46, 0.5);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
 .input-error {
-  border-color: #ff4d4d !important;
+  border-color: #ff6b6b !important;
 }
 
-/* ============================================================
-    BUTTON — Ripple + Lift Animation
-============================================================ */
-.login-btn {
-  width: 100%;
-  background: #1a3c2e;
-  color: #e3e8dc;
-
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin-top: 10px;
-
-  transition: 0.25s ease;
-  position: relative;
-  overflow: hidden;
+.error-text {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
 }
 
-.login-btn:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
-  background: #0d241a;
-}
-
-/* Ripple effect */
-.login-btn:active {
-  transform: scale(0.97);
-}
-
-
-/* ============================================================
-    FOOTER
-============================================================ */
-.login-footer {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 1rem;
-  color: #1a3c2e;
-}
-
-.signup-link {
-  color: #1a3c2e;
-  font-weight: 700;
-}
-
-.signup-link:hover {
-  text-decoration: underline;
-}
-
-/* ============================
-   PASSWORD FIELD WRAPPER
-============================ */
-.password-group {
-  position: relative;
-}
-
+/* PASSWORD EYE */
 .password-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
-/* Add spacing for the eye toggle */
-.password-wrapper input {
-  width: 100%;
-  padding-right: 50px; 
-}
-
-/* ============================
-   EYE TOGGLE BUTTON
-============================ */
 .eye-btn {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-
-  height: 32px;
-  width: 32px;
-  border: none;
   background: transparent;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  border-radius: 50%;
-  transition: 0.25s ease;
-  color: #1a3c2e;       /* Default color for SVG stroke */
+  transition: 0.2s;
 }
 
-/* Hover effect */
 .eye-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
+  color: #fff;
   transform: translateY(-50%) scale(1.1);
 }
 
-/* Active (show password) state */
-.eye-btn.active {
-  color: #0a100e;
-  background: rgba(26, 60, 46, 0.1);
-}
-
-/* Ensure SVG icon scales properly */
-.eye-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  display: block;
-}
-
-/* Keyboard accessibility */
-.eye-btn:focus {
-  outline: 2px solid rgba(39, 55, 44, 0.4);
-  outline-offset: 2px;
-}
+/* ACTION LINKS */
 .forgot-link {
   text-align: right;
   margin-top: -10px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .forgot-link a {
-  color: #1a3c2e;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: 0.3s;
 }
 
 .forgot-link a:hover {
-  text-decoration: underline;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
+/* BUTTON */
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #a4fbe3 0%, #4da3ff 100%);
+  /* Liquid Accent */
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #003366;
+  /* Dark text on bright button */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
 
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(77, 163, 255, 0.4);
+}
 
+/* FOOTER */
+.login-footer {
+  text-align: center;
+  margin-top: 25px;
+  color: rgba(255, 255, 255, 0.8);
+}
 
+.signup-link {
+  color: #a4fbe3;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+  color: #fff;
+}

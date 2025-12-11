@@ -1,124 +1,134 @@
 /* ============================================
-   PAGE BACKGROUND — IMAGE + SOFT DARK FADE
+    HOME PAGE - LIQUID GLASS THEME
 ============================================ */
 .home-container {
   height: 100vh;
   width: 100vw;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  background-image: url('/public/Back3.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
+  background: transparent;
+  /* Show global gradient */
   position: relative;
-  overflow-x: hidden;  /* only hide horizontal scroll */
-  overflow-y: auto;    /* page can scroll vertically */
-  padding-bottom: 60px; /* space for scrolling */
+  overflow: hidden;
+  padding-bottom: 60px;
 }
 
-/* Soft dark fade to improve visibility */
+/* Optional: Additional overlay if text contrast is needed */
 .home-container::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(10, 16, 14, 0.25); /* subtle tint */
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.1);
   z-index: 0;
 }
 
 /* ============================================
-   LIGHT FLOATING PARTICLES
+    PARTICLES
 ============================================ */
 .home-particle {
   position: absolute;
-  width: 7px;
-  height: 7px;
-  background: rgba(240, 223, 241, 0.85);
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(242, 157, 186, 0.65);
-
-  animation: floatUp 12s infinite ease-in-out;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  animation: floatUp 15s infinite ease-in-out;
   z-index: 1;
 }
 
 @keyframes floatUp {
-  from { transform: translateY(0); opacity: 0.5; }
-  to   { transform: translateY(-120vh); opacity: 0; }
+  from {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  to {
+    transform: translateY(-100vh) scale(1.5);
+    opacity: 0;
+  }
 }
 
 /* ============================================
-   GLASSMORPHISM CARD
+    GLASS CARD
 ============================================ */
 .home-card {
-  width: 540px;
-  padding: 45px 38px;
-
+  width: 600px;
+  padding: 60px 40px;
   text-align: center;
-  border-radius: 20px;
+  border-radius: 30px;
 
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255,255,255,0.3);
-
-  box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 
   z-index: 2;
-  animation: fadeIn 1s ease forwards;
+  animation: scaleIn 0.8s ease cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: scale(0.9);
 }
 
-@keyframes fadeIn {
-  from { transform: translateY(40px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
+@keyframes scaleIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* ============================================
-   TEXT STYLING
+    TEXT STYLING
 ============================================ */
 .home-heading {
-  font-size: 3rem;
-  margin-bottom: 12px;
-
-  color: #f0dff1;
-  font-weight: 800;
-  letter-spacing: 1px;
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .home-tagline {
-  font-size: 1.25rem;
-  color: #f0dff1;
-  margin-bottom: 26px;
-  opacity: 0.95;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 30px;
+  line-height: 1.6;
 }
 
 /* Divider */
 .home-divider {
-  width: 85%;
-  height: 2px;
-  background: rgba(240, 223, 241, 0.35);
-  margin: auto;
-  border-radius: 10px;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  margin: 0 auto;
+  border-radius: 2px;
+  opacity: 0.7;
 }
 
 /* ============================================
-   FOOTER
+    FOOTER
 ============================================ */
 .home-footer {
   position: absolute;
-  bottom: 18px;
+  bottom: 30px;
   width: 100%;
-
-  color: #f0dff1;
+  color: rgba(255, 255, 255, 0.7);
   text-align: center;
   font-size: 1rem;
-
   z-index: 2;
 }
 
 .home-footer p {
-  margin: 4px 0;
+  margin: 5px 0;
+}
+
+.home-footer strong {
+  color: #fff;
 }

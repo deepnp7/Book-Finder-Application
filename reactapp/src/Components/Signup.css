@@ -1,203 +1,181 @@
-/* BACKGROUND */
+/* ============================================================
+    SIGNUP - LIQUID GLASS THEME
+============================================================ */
+
+/* CONTAINER */
 .signup-container {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background-image: url('/public/Background.jpeg');
-  background-size: cover;
-  background-position: center;
-
-  font-family: 'Segoe UI', Tahoma;
-
+  background: transparent;
+  /* Show global gradient */
   overflow: hidden;
+  padding: 40px 20px;
 }
 
-.signup-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(4px);
-  z-index: 0;
-}
-
-/* PARTICLES */
+/* BACKGROUND PARTICLES */
 .particle {
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 50%;
-  animation: floatUp 10s infinite;
+  animation: floatUp 15s infinite ease-out;
   z-index: 0;
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(0); opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-600px); opacity: 0; }
+  0% {
+    transform: translateY(100vh) scale(0.5);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-10vh) scale(1.5);
+    opacity: 0;
+  }
 }
 
-/* SIGNUP CARD */
+/* SIGNUP CARD - GLASS PANEL */
 .signup-card {
   position: relative;
-  width: 460px;
-  padding: 32px;
-
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-  backdrop-filter: blur(14px);
-
+  width: 500px;
+  /* Glassmorphism */
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px;
   z-index: 2;
-  animation: fadeIn 0.9s ease forwards;
+  animation: cardEntry 0.8s ease forwards;
 }
 
-@keyframes fadeIn {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes cardEntry {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .signup-title {
   text-align: center;
-  color: white;
-  font-size: 2rem;
+  color: #fff;
+  font-size: 2.2rem;
   font-weight: 800;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* FORM */
+/* FORM WRAPPER */
 .signup-form {
-  background: rgba(255,255,255,0.95);
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  /* Inner container could be slightly darker/lighter if needed, but direct form is fine on glass */
+  width: 100%;
 }
 
-/* FLOATING LABEL INPUT */
+/* FLOATING INPUTS */
 .floating-group {
   position: relative;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .floating-group input {
   width: 100%;
-  padding: 14px 12px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  outline: none;
+  padding: 16px 16px 6px;
+  /* Extra top padding for label */
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
   font-size: 1rem;
-  background: white;
-  transition: 0.3s ease;
+  outline: none;
+  transition: all 0.3s ease;
+  height: 56px;
 }
 
 .floating-group input:focus {
-  border-color: #1a3c2e;
-  box-shadow: 0 0 10px rgba(26, 60, 46, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #a4fbe3;
+  box-shadow: 0 0 15px rgba(164, 251, 227, 0.2);
 }
 
 .floating-group label {
   position: absolute;
-  left: 12px;
-  top: 14px;
-
+  left: 16px;
+  top: 18px;
   font-size: 1rem;
-  color: #777;
+  color: rgba(255, 255, 255, 0.7);
   pointer-events: none;
-
-  transition: 0.25s ease;
+  transition: all 0.25s ease;
 }
 
-/* Floating effect */
-.floating-group input:focus + label,
-.floating-group input:not(:placeholder-shown) + label {
-  top: -9px;
-  left: 10px;
-  background: white;
-  padding: 0 6px;
-  font-size: 0.8rem;
-  color: #1a3c2e;
-}
-
-/* ERROR TEXT */
-.error {
-  color: #ff4d4d;
-  margin-top: 4px;
-  font-size: 0.85rem;
+/* Floating animation */
+.floating-group input:focus+label,
+.floating-group input:not(:placeholder-shown)+label {
+  top: 8px;
+  left: 16px;
+  font-size: 0.75rem;
+  color: #a4fbe3;
   font-weight: 600;
 }
-.error.below {
-  margin-top: -10px;
-  margin-bottom: 15px;
-  color: #ff4d4d;
+
+/* ERRORS */
+.error {
+  color: #ff8ca3;
+  /* Softer red for dark bg */
   font-size: 0.85rem;
+  margin-top: 5px;
+  margin-left: 5px;
 }
 
-
-/* PASSWORD INPUT WITH EYE */
-.password-wrapper {
-  position: relative;
-}
-
-.eye-btn {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-
-  width: 32px;
-  height: 32px;
-
-  border: none;
-  background: transparent;
-  cursor: pointer;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transition: 0.2s ease;
-}
-
-.eye-btn svg {
-  width: 22px;
-  height: 22px;
-  stroke: #1a3c2e;
-  fill: none;
-}
-
-.eye-btn:hover {
-  transform: translateY(-50%) scale(1.1);
+.error.below {
+  margin-top: -15px;
+  margin-bottom: 15px;
 }
 
 /* PASSWORD STRENGTH */
 .strength {
-  font-size: 0.9rem;
-  margin-top: -10px;
-  margin-bottom: 16px;
+  font-size: 0.85rem;
+  margin-top: -15px;
+  margin-bottom: 20px;
+  text-align: right;
   font-weight: 600;
 }
 
-.strength.weak { color: #ff4d4d; }
-.strength.medium { color: #ffb700; }
-.strength.strong { color: #1a8c36; }
+.strength.weak {
+  color: #ff8ca3;
+}
+
+.strength.medium {
+  color: #f9d976;
+}
+
+.strength.strong {
+  color: #a4fbe3;
+}
 
 /* DROPDOWN */
 .dropdown-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .dropdown-group label {
-  font-weight: 600;
-  color: #1a3c2e;
-  margin-bottom: 6px;
   display: block;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+  margin-left: 5px;
 }
 
 .dropdown-wrapper {
@@ -206,225 +184,151 @@
 
 .dropdown-wrapper select {
   width: 100%;
-  padding: 14px 18px;
-  padding-right: 50px;
-
-  font-size: 1rem;
+  padding: 14px 16px;
   border-radius: 12px;
-  border: 2px solid #c6c6c6;
-  background: rgba(255,255,255,0.85);
-
-  cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  /* White text selected */
+  font-size: 1rem;
   appearance: none;
+  cursor: pointer;
   outline: none;
+  transition: 0.3s;
+}
 
-  transition: 0.25s ease;
+/* Fix for dark option text on some browsers since option { background } support is spotty on glass */
+.dropdown-wrapper select option {
+  background: #333;
+  /* Dark background for dropdown options */
+  color: #fff;
 }
 
 .dropdown-wrapper select:hover {
-  border-color: #1a3c2e;
-  box-shadow: 0 0 10px rgba(26, 60, 46, 0.25);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.dropdown-wrapper select:focus {
-  border-color: #1a3c2e;
-  background: white;
-  box-shadow: 0 0 12px rgba(26, 60, 46, 0.4);
-}
-
-/* ARROW ICON */
 .dropdown-arrow {
   position: absolute;
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.4rem;
-  color: #1a3c2e;
+  color: #fff;
   pointer-events: none;
-  transition: 0.25s ease;
-}
-
-/* ROTATE ARROW */
-.dropdown-wrapper select:focus + .dropdown-arrow {
-  transform: translateY(-50%) rotate(180deg);
 }
 
 /* BUTTON */
 .signup-btn {
   width: 100%;
-  padding: 14px;
-
-  background: #1a3c2e;
-  color: #e3e8dc;
-  font-size: 1.15rem;
-  border-radius: 10px;
+  padding: 16px;
+  background: linear-gradient(135deg, #a4fbe3 0%, #4da3ff 100%);
   border: none;
+  border-radius: 12px;
+  color: #003366;
+  font-size: 1.15rem;
+  font-weight: 700;
   cursor: pointer;
-
-  transition: 0.25s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .signup-btn:hover {
   transform: translateY(-3px);
-  background: #0d241a;
-  box-shadow: 0px 10px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(77, 163, 255, 0.4);
 }
 
-/* LOGIN LINK */
+/* LINKS */
 .login-link {
-  margin-top: 18px;
+  margin-top: 25px;
   text-align: center;
-  color: #1a3c2e;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .login-link span {
-  color: #1a3c2e;
-  font-weight: bold;
+  color: #a4fbe3;
+  font-weight: 700;
   cursor: pointer;
+  margin-left: 5px;
 }
 
-/* ==========================================
-   PREMIUM SUCCESS MODAL WITH VISUAL EFFECTS
-========================================== */
+.login-link span:hover {
+  text-decoration: underline;
+  color: #fff;
+}
 
-/* DARK OVERLAY WITH PARTICLES + VIGNETTE */
+/* EYE ICON */
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.eye-btn:hover {
+  color: #fff;
+}
+
+/* SUCCESS MODAL - GLASS STYLE */
 .modal-overlay {
   position: fixed;
   inset: 0;
-
-  background:
-    radial-gradient(circle at center, rgba(0,0,0,0.88), rgba(0,0,0,0.96)),
-    linear-gradient(to bottom right, rgba(0,0,0,0.78), rgba(0,0,0,0.85));
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-
-  overflow: hidden;
   z-index: 9999;
 }
 
-/* FLOATING PARTICLES BEHIND THE MODAL */
-.modal-overlay::before {
-  content: "";
-  position: absolute;
-  width: 150%;
-  height: 150%;
-
-  background: url("/public/Back3.jpeg");
-
-  
-  opacity: 0.45;
-  filter: blur(1px);
-}
-
-@keyframes particlesMove {
-  from { transform: translate(-5%, -5%) rotate(0deg); }
-  to   { transform: translate(5%, 5%) rotate(360deg); }
-}
-
-/* GLOW RING BEHIND MODAL */
-.modal-overlay::after {
-  content: "";
-  position: absolute;
-  width: 420px;
-  height: 420px;
-
-  background: radial-gradient(circle,
-    rgba(26, 60, 46, 0.6) 0%,
-    rgba(26, 60, 46, 0.1) 50%,
-    transparent 100%
-  );
-
-  filter: blur(40px);
-  animation: glowPulse 4s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-  0%,100% { transform: scale(1); opacity: 0.55; }
-  50%     { transform: scale(1.15); opacity: 0.85; }
-}
-
-/* MODAL CARD */
 .modal {
-  position: relative;
-  width: 360px;
-  padding: 38px 30px;
-
-  background: rgba(255,255,255,0.98);
-  border-radius: 18px;
-
+  background: rgba(255, 255, 255, 0.9);
+  /* Opaque glass for readability */
+  padding: 40px;
+  border-radius: 24px;
   text-align: center;
-  color: white;
-
-  box-shadow:
-    0 15px 45px rgba(0,0,0,0.55),
-    0 0 25px rgba(255,255,255,0.4);
-
-  border: 2px solid rgba(255,255,255,0.75);
-
-  animation: modalPop 0.45s ease-out forwards;
-  z-index: 10;
-
-  /* ---------------------------------- */
-  /* 🔥 FIX 1: Make content vertical   */
-  /* ---------------------------------- */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  /* ---------------------------------- */
-  /* 🔥 FIX 2: Spacing between items    */
-  /* ---------------------------------- */
-  gap: 14px; 
+  width: 350px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  animation: popIn 0.4s ease forwards;
 }
 
-/* Optional: Better spacing for text */
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .modal h3 {
-  margin: 0;
-  font-size: 1.55rem;
-  font-weight: 700;
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
 .modal p {
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.45;
+  color: #666;
+  margin-bottom: 25px;
 }
 
-
-/* POP ANIMATION */
-@keyframes modalPop {
-  0%   { transform: scale(0.7) translateY(30px); opacity: 0; }
-  60%  { transform: scale(1.05) translateY(-3px); opacity: 1; }
-  100% { transform: scale(1) translateY(0); }
-}
-
-/* BUTTON */
 .modal button {
-  padding: 11px 28px;
-
-  background: linear-gradient(135deg, #1a3c2e, #0f271e);
-  color: #e4f0e9;
-
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #a4fbe3 0%, #4da3ff 100%);
   border: none;
-  border-radius: 12px;
-
-  font-size: 1.05rem;
-  font-weight: 600;
+  border-radius: 10px;
+  color: #003366;
+  font-weight: 700;
   cursor: pointer;
-
-  transition: 0.3s ease;
-  box-shadow: 0 6px 22px rgba(0,0,0,0.35);
+  transition: 0.3s;
 }
 
 .modal button:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+  transform: scale(1.05);
 }
-
-

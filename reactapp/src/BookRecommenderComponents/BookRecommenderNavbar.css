@@ -1,10 +1,14 @@
-
+/* ===========================================================
+      RECOMMENDER GLASSNAV (Liquid Glass Theme)
+=========================================================== */
 
 /* ==== NAVBAR MAIN ===== */
 .navC {
   width: 100%;
-  background: #27372c;
-  padding: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 16px 30px;
 
   display: flex;
   justify-content: space-between;
@@ -14,181 +18,218 @@
   top: 0;
   z-index: 999;
 
-  overflow: visible; /* Prevents logout-btn from going out */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
-
 
 /* ==== LOGO ===== */
 .navC-logo {
-  font-size: 1.55rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  color: #f0dff1;
+  color: #fff;
   letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
-
 
 /* ==== NAV ITEMS ===== */
 .navC-items {
   display: flex;
   align-items: center;
-  gap: 14px; /* FIXED — reduced for better alignment */
+  gap: 20px;
 }
-
 
 /* ==== LINKS & USER TEXT ===== */
 .navC-items a,
 .navC-dropbtn,
 .navC-user {
-  color: #f0dff1;
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.96rem;
-  font-weight: 500;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
-
-/* Hover color from rose palette */
 .navC-items a:hover {
-  color: #f29dba;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
 }
-
 
 /* ==== DROPDOWN ===== */
 .navC-dropdown {
   position: relative;
 }
 
-
 .navC-dropbtn {
-  background: #505950;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 16px;
+  border-radius: 12px;
   cursor: pointer;
 
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 
-  color: #f0dff1;
+  color: #fff;
+  transition: 0.3s ease;
 }
 
+.navC-dropbtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
 
 /* FIX: Proper alignment + spacing */
 .navC-dropmenu {
   position: absolute;
-  top: 110%;
+  top: 120%;
   right: 0;
 
-  background: #0a100e;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  /* Opaque dropdown for readability */
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 
-  padding: 6px 0;
+  padding: 8px 0;
   display: none;
-  min-width: 160px;
+  min-width: 180px;
 
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
-
 
 .navC-dropdown:hover .navC-dropmenu {
   display: block;
+  animation: fadeInDrop 0.2s ease-out;
 }
 
+@keyframes fadeInDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .navC-dropmenu a {
-  font-size: 0.9rem;
-  padding: 10px 14px;
+  font-size: 0.95rem;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #f0dff1;
+  gap: 10px;
+  color: #333;
+  /* Dark text on white background */
 }
-
 
 .navC-dropmenu a:hover {
-  background: #27372c;
-  color: #f29dba;
+  background: #f0f0f0;
+  color: #333;
 }
-
 
 /* ==== LOGOUT BUTTON ===== */
 .navC-logout {
-  background: #c23036;
-  border: none;
-  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 10px 20px;
 
-  border-radius: 6px;
-  color: white;
+  border-radius: 12px;
+  color: #fff;
   cursor: pointer;
 
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-weight: 600;
 
-  transition: 0.25s ease;
+  transition: 0.3s ease;
 }
-
 
 .navC-logout:hover {
-  background: #8b1a22;
+  background: rgba(255, 77, 77, 0.8);
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
 }
-
 
 /* ==== LOGOUT MODAL ===== */
 .navC-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
 
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
-
 
 .navC-box {
-  background: white;
-  width: 310px;
-  padding: 22px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  width: 350px;
+  padding: 30px;
+  border-radius: 20px;
   text-align: center;
 
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: scaleUp 0.3s ease;
 }
 
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 .navC-box h3 {
-  margin-bottom: 8px;
-  color: black;
+  margin-bottom: 12px;
+  color: #333;
+  font-size: 1.4rem;
 }
 
 .navC-box p {
-  margin-bottom: 18px;
-  color: #333;
-  font-size: 0.95rem;
+  margin-bottom: 25px;
+  color: #666;
+  font-size: 1rem;
 }
 
 .navC-box button {
-  padding: 8px 16px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 6px;
-  margin: 0 6px;
-  font-size: 0.95rem;
+  border-radius: 10px;
+  margin: 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
 }
-
 
 .navC-box .yes {
-  background: #c23036;
+  background: linear-gradient(135deg, #ff6b6b, #ff4757);
   color: white;
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
 }
 
+.navC-box .yes:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+}
 
 .navC-box .no {
-  background: #505950;
-  color: white;
+  background: #e0e0e0;
+  color: #555;
 }
 
+.navC-box .no:hover {
+  background: #ccc;
+}

@@ -1,229 +1,231 @@
-/* FULL BACKGROUND LAYER */
-.bookform-background {
-  position: relative;
-  height: 100vh;
-  width: 100vw;
+/* ============================================================
+   BOOK FORM - LIQUID GLASS THEME
+============================================================ */
 
-  background-image: url('/public/Back5.jpeg');
-  background-size: cover;
-  background-position: center;
-
-  overflow:visible;
-}
-
-
-.bookform-background::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(4px);
-  z-index: 0;
-}
-
-
-/* WRAPPER THAT CENTERS THE CARD ONLY */
+/* WRAPPER */
 .bookform-wrapper {
   position: relative;
-  height: calc(100vh - 80px); /* leaves space for navbar */
+  min-height: calc(100vh - 80px);
+  /* accounting for navbar */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2;
+  background: transparent;
+  padding: 40px 20px;
+  overflow: hidden;
 }
-
 
 /* PARTICLES */
 .particle {
   position: absolute;
   width: 6px;
   height: 6px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 50%;
-  animation: floatUp 10s infinite linear;
+  animation: floatFormParticles 20s linear infinite;
   z-index: 0;
 }
 
+@keyframes floatFormParticles {
+  0% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
 
-@keyframes floatUp {
-  0% { transform: translateY(0); opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-600px); opacity: 0; }
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
 }
 
-
-/* CARD SAME AS SIGNUP */
+/* MAIN CARD */
 .bookform-card {
-  width: 480px;
-  padding: 32px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 18px;
-  box-shadow: 0 10px 35px rgba(0,0,0,0.45);
-  backdrop-filter: blur(14px);
-  animation: fadeIn 0.9s ease forwards;
+  width: 550px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  animation: formEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: translateY(40px);
 }
 
+@keyframes formEntry {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 .bookform-title {
   text-align: center;
-  font-size: 2rem;
-  color: white;
+  font-size: 2.2rem;
+  color: #fff;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-/* FORM INSIDE CARD */
+/* INNER FORM IS TRANSPARENT NOW */
 .bookform-form {
-  background: rgba(255,255,255,0.97);
-  padding: 25px;
-  border-radius: 14px;
+  background: transparent;
 }
 
-
-/* FLOATING LABEL INPUTS */
+/* FLOATING INPUTS */
 .floating-group {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
-
 
 .floating-group input {
   width: 100%;
-  padding: 14px 12px;
-  border-radius: 10px;
-  border: 2px solid #1a3c2e;
-  background: white;
-  transition: 0.3s;
+  padding: 16px 16px 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #fff;
   font-size: 1rem;
+  outline: none;
+  transition: 0.3s ease;
+  height: 56px;
 }
-
 
 .floating-group input:focus {
-  border-color: #1a3c2e;
-  box-shadow: 0 0 10px rgba(26, 60, 46, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #a4fbe3;
+  box-shadow: 0 0 15px rgba(164, 251, 227, 0.2);
 }
-
 
 .floating-group label {
   position: absolute;
-  left: 12px;
-  top: 14px;
+  left: 16px;
+  top: 18px;
   font-size: 1rem;
-  color: #1a3c2e;
+  color: rgba(255, 255, 255, 0.7);
   pointer-events: none;
-  transition: 0.25s;
+  transition: 0.25s ease;
 }
 
-
-.floating-group input:focus + label,
-.floating-group input:not(:placeholder-shown) + label {
-  top: -8px;
-  left: 10px;
-  font-size: 0.8rem;
-  padding: 0 6px;
-  background: white;
-  color: #1a3c2e;
+.floating-group input:focus+label,
+.floating-group input:not(:placeholder-shown)+label {
+  top: 8px;
+  left: 16px;
+  font-size: 0.75rem;
+  color: #a4fbe3;
+  font-weight: 600;
 }
-
 
 /* FILE UPLOAD */
 .file-label {
-  font-weight: 600;
-  color: #1a3c2e;
-  margin-bottom: 8px;
   display: block;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 12px;
 }
 
-
-.preview-box img {
-  width: 150px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-  margin-top: 10px;
-}
-
-
-/* Improve default file input visibility */
 input[type="file"] {
-  background: rgba(255, 255, 255, 0.85) !important;
-  color: #0f1e14 !important;
-  padding: 8px;
-  border: 1.5px solid rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #fff;
   cursor: pointer;
-
-  /* prevents text from becoming transparent */
-  -webkit-text-fill-color: #0f1e14 !important;
 }
 
-
-/* Change file button */
 input[type="file"]::-webkit-file-upload-button {
-  background: #f0dff1;
-  color: #e3e8dc;
+  background: linear-gradient(135deg, #a4fbe3, #4da3ff);
+  color: #003366;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.25s ease;
-  font-weight: 600;
+  font-weight: 700;
+  margin-right: 14px;
+  transition: 0.3s ease;
 }
-
 
 input[type="file"]::-webkit-file-upload-button:hover {
-  background: #f29dba;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.preview-box img {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 12px;
+  margin-top: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* BUTTON */
 .bookform-btn {
   width: 100%;
-  padding: 10px;
-  background: #1a3c2e;
-  color: #e3e8dc;
-  border-radius: 10px;
+  padding: 16px;
+  background: linear-gradient(135deg, #a4fbe3 0%, #4da3ff 100%);
+  color: #003366;
   border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 1.15rem;
-  transition: 0.25s;
+  margin-top: 20px;
+  transition: 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
-
 
 .bookform-btn:hover {
-  background: #0d241a;
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(77, 163, 255, 0.4);
 }
 
-
-/* MODAL SAME AS SIGNUP */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.78);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
-
 
 .modal {
-  background: #0d241a;
-  padding: 30px;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  width: 400px;
+  border-radius: 24px;
   text-align: center;
-  width: 340px;
-  animation: pop 0.4s ease;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  animation: popModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+@keyframes popModal {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
 
-@keyframes pop {
-  0% { transform: scale(0.7); opacity: 0; }
-  60% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
 }
